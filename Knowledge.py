@@ -61,13 +61,12 @@ class Knowledge:
 def load(filename):
     with open(filename + '.knw', 'rb') as infile:
         a = bytearray(infile.read())
-    rez = Knowledge(filename)
+    res = Knowledge(filename)
     state = 'key'
     thing = None
     key = None
     data = None
     for x in a:
-        print(x)
         if thing == 'integer':
             if x == 0:
                 thing = None
@@ -75,7 +74,7 @@ def load(filename):
                     state = 'data'
                 else:
                     state = 'key'
-                    rez.add_data(key, data)
+                    res.add_data(key, data)
                     key = None
                     data = None
             else:
@@ -90,7 +89,7 @@ def load(filename):
                     state = 'data'
                 else:
                     state = 'key'
-                    rez.add_data(key, data)
+                    res.add_data(key, data)
                     key = None
                     data = None
             else:
@@ -101,16 +100,14 @@ def load(filename):
         else:
             if x == 0:
                 thing = 'integer'
-                print(state == 'key', state)
                 if state == 'key':
                     key = 0
                 else:
                     data = 0
             elif x == 1:
                 thing = 'string'
-                print(state == 'key', state)
                 if state == 'key':
                     key = ''
                 else:
                     data = ''
-    return rez
+    return res
