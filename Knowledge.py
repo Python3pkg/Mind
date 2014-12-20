@@ -10,6 +10,7 @@ class Knowledge:
     Class for all data in programm.
     0 - integers
     1 - strings
+    2 - floating point
     """
     def __init__(self, filename):
         self.data = {}
@@ -23,7 +24,7 @@ class Knowledge:
             self.ret += ' : '
             self.ret += str(self.data[x])
             self.ret += '\n'
-        return self.ret
+        return self.ret[:-1]
 
     def add_data(self, key, info):
         self.key = key
@@ -41,7 +42,21 @@ class Knowledge:
                 self.save.append(0)
                 for x in range(int(thing / 250)):
                     self.save.append(255)
+                    thing -= 250
                 self.save.append(thing + 5)
+                self.save.append(0)
+            elif type(thing) == float:
+                self.save.append(0)
+                for x in range(int(thing / 250)):
+                    self.save.append(255)
+                    thing -= 250
+                self.save.append(int(thing) + 5)
+                thing -= int(thing)
+                self.save.append(2)
+                for x in range(int(round(thing, 3) * 1000 / 250)):
+                    self.save.append(255)
+                    thing -= 0.250
+                self.save.append(int(thing * 1000) + 5)
                 self.save.append(0)
             if type(self.data[thing]) == str:
                 self.save.append(1)
@@ -52,7 +67,23 @@ class Knowledge:
                 self.save.append(0)
                 for x in range(int(self.data[thing] / 250)):
                     self.save.append(255)
+                    self.data[thing] -= 250
                 self.save.append(self.data[thing] + 5)
+                self.save.append(0)
+            elif type(self.data[thing]) == float:
+                self.save.append(0)
+                for x in range(int(self.data[thing] / 250)):
+                    self.save.append(255)
+                    self.data[thing] -= 250
+                self.save.append(int(self.data[thing]) + 5)
+                print(self.data[thing])
+                self.data[thing] -= int(self.data[thing])
+                print(self.data[thing])
+                self.save.append(2)
+                for x in range(int(round(self.data[thing], 3) * 1000 / 250)):
+                    self.save.append(255)
+                    self.data[thing] -= 0.250
+                self.save.append(int(self.data[thing] * 1000) + 5)
                 self.save.append(0)
         with open(self.filename, 'wb') as output:
             output.write(self.save)
@@ -66,6 +97,7 @@ def load(filename):
     thing = None
     key = None
     data = None
+    decimal = False
     for x in a:
         if thing == 'integer':
             if x == 0:
@@ -77,11 +109,20 @@ def load(filename):
                     res.add_data(key, data)
                     key = None
                     data = None
+                    decimal = False
+            elif x == 2:
+                decimal = True
             else:
                 if state == 'key':
-                    key += x - 5
+                    if decimal:
+                        key += x / 1000 + 0.005
+                    else:
+                        key += x - 5
                 else:
-                    data += x - 5
+                    if decimal:
+                        data += x / 1000 + 0.005
+                    else:
+                        data += x - 5
         elif thing == 'string':
             if x == 1:
                 thing = None
