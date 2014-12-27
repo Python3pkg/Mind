@@ -1,19 +1,19 @@
-Brain
+Mind
 =====
 Library for games in Python  
 
-Brain.Knowledge:  
+Mind.Knowledge:  
 -	part of library for data saving.  
--	Brain.Knowledge.Knowledge:  
+-	Mind.Knowledge.Knowledge:  
 *		-class for all data in programm  
--	Brain.Knowledge.load:  
+-	Mind.Knowledge.load:  
 *		-function that loads saved data and returns Knowledge object  
 
-Brain.Orientation:  
+Mind.Orientation:  
 -	part of library for maps.  
--	Brain.Orientation.MAP:  
+-	Mind.Orientation.MAP:  
 *		-basic map class  
--	Brain.Orientation.point:  
+-	Mind.Orientation.point:  
 *		-basic point class  
--	Brain.Orientation.group_of_points:  
+-	Mind.Orientation.group_of_points:  
 *		-class for group of points  
