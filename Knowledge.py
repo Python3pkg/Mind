@@ -5,12 +5,53 @@ aka. Knowledge
 """
 
 
-class Knowledge:
+def data_bytes(data):
     """
-    Class for all data in programm.
-    0 - integers
+    function that data(number, string...) converts to bytes:
+    0 - numbers(integers and floats)
     1 - strings
     2 - floating point
+    3 - lists begining
+    4 - lists ending
+    """
+    final = bytearray()
+    if type(data) == str:
+        final.append(1)  # starting number of strings
+        for l in data:
+            final.append(ord(l))
+        final.append(1)  # ending number of strings
+    elif type(data) == int:
+        final.append(0)  # starting number of numbers
+        for x in range(int(data / 250)):
+            final.append(255)
+            data -= 250
+        final.append(data + 5)
+        final.append(0)  # ending number of numbers
+    elif type(data) == float:
+        final.append(0)  # starting number of numbers
+        for x in range(int(data / 250)):
+            final.append(255)
+            data -= 250
+        final.append(int(data) + 5)
+        data -= int(data)
+        final.append(2)  # floating point (.) number
+        for x in range(int(round(data, 3) * 1000 / 250)):
+            final.append(255)
+            data -= 0.250
+        final.append(int(data * 1000) + 5)
+        final.append(0)  # ending number of strings
+    elif type(data) == list:
+        final.append(3)  # starting number of lists
+        for x in data:
+            for bit in data_bytes(x):
+                final.append(bit)
+        final.append(4)  # ending number of lists
+    return final
+
+
+class Knowledge:
+    """
+    class for all data in programm
     """
     def __init__(self, filename):
         self.data = {}
@@ -24,7 +65,7 @@ class Knowledge:
             self.ret += ' : '
             self.ret += str(self.data[x])
             self.ret += '\n'
-        return self.ret[:-1]
+        return self.ret[:-1]  # so last \n is deleted
 
     def add_data(self, key, info):
         self.key = key
@@ -33,122 +74,80 @@ class Knowledge:
 
     def save_data(self):
         for thing in self.data:
-            if type(thing) == str:
-                self.save.append(1)
-                for l in thing:
-                    self.save.append(ord(l))
-                self.save.append(1)
-            elif type(thing) == int:
-                self.save.append(0)
-                for x in range(int(thing / 250)):
-                    self.save.append(255)
-                    thing -= 250
-                self.save.append(thing + 5)
-                self.save.append(0)
-            elif type(thing) == float:
-                self.save.append(0)
-                for x in range(int(thing / 250)):
-                    self.save.append(255)
-                    thing -= 250
-                self.save.append(int(thing) + 5)
-                thing -= int(thing)
-                self.save.append(2)
-                for x in range(int(round(thing, 3) * 1000 / 250)):
-                    self.save.append(255)
-                    thing -= 0.250
-                self.save.append(int(thing * 1000) + 5)
-                self.save.append(0)
-            if type(self.data[thing]) == str:
-                self.save.append(1)
-                for l in self.data[thing]:
-                    self.save.append(ord(l))
-                self.save.append(1)
-            elif type(self.data[thing]) == int:
-                self.save.append(0)
-                for x in range(int(self.data[thing] / 250)):
-                    self.save.append(255)
-                    self.data[thing] -= 250
-                self.save.append(self.data[thing] + 5)
-                self.save.append(0)
-            elif type(self.data[thing]) == float:
-                self.save.append(0)
-                for x in range(int(self.data[thing] / 250)):
-                    self.save.append(255)
-                    self.data[thing] -= 250
-                self.save.append(int(self.data[thing]) + 5)
-                print(self.data[thing])
-                self.data[thing] -= int(self.data[thing])
-                print(self.data[thing])
-                self.save.append(2)
-                for x in range(int(round(self.data[thing], 3) * 1000 / 250)):
-                    self.save.append(255)
-                    self.data[thing] -= 0.250
-                self.save.append(int(self.data[thing] * 1000) + 5)
-                self.save.append(0)
+            for bit in data_bytes(thing):
+                self.save.append(bit)
+            for bit in data_bytes(self.data[thing]):
+                self.save.append(bit)
         with open(self.filename, 'wb') as output:
             output.write(self.save)
 
 
+def bytes_data(binary):
+    """
+    function that bytes converts to data(numbers, strigns...)
+    """
+    thing = None
+    decimal = False
+    ret = None
+    for x in binary:
+        if thing == 'integer':
+            if x == 0:
+                thing = None
+                decimal = False
+                yield ret
+                ret = None
+            elif x == 2:
+                decimal = True
+            else:
+                if decimal:
+                    ret += x / 1000 + 0.005
+                else:
+                    ret += x - 5
+        elif thing == 'string':
+            if x == 1:
+                thing = None
+                yield ret
+                ret = None
+            else:
+                ret += chr(x)
+        elif thing == 'list':
+            if x == 4:
+                thing = None
+                fin = []
+                for b in bytes_data(ret):
+                    fin.append(b)
+                yield fin
+                ret = None
+            else:
+                ret.append(x)
+        else:
+            if x == 0:
+                thing = 'integer'
+                ret = 0
+            elif x == 1:
+                thing = 'string'
+                ret = ''
+            elif x == 3:
+                thing = 'list'
+                ret = bytearray()
+
+
 def load(filename):
+    """function that loads saved data and returns Knowledge object"""
     with open(filename + '.knw', 'rb') as infile:
         a = bytearray(infile.read())
     res = Knowledge(filename)
     state = 'key'
-    thing = None
     key = None
     data = None
-    decimal = False
-    for x in a:
-        if thing == 'integer':
-            if x == 0:
-                thing = None
-                if state == 'key':
-                    state = 'data'
-                else:
-                    state = 'key'
-                    res.add_data(key, data)
-                    key = None
-                    data = None
-                    decimal = False
-            elif x == 2:
-                decimal = True
-            else:
-                if state == 'key':
-                    if decimal:
-                        key += x / 1000 + 0.005
-                    else:
-                        key += x - 5
-                else:
-                    if decimal:
-                        data += x / 1000 + 0.005
-                    else:
-                        data += x - 5
-        elif thing == 'string':
-            if x == 1:
-                thing = None
-                if state == 'key':
-                    state = 'data'
-                else:
-                    state = 'key'
-                    res.add_data(key, data)
-                    key = None
-                    data = None
-            else:
-                if state == 'key':
-                    key += chr(x)
-                else:
-                    data += chr(x)
+    for x in bytes_data(a):
+        if state == 'key':
+            key = x
+            state = 'data'
         else:
-            if x == 0:
-                thing = 'integer'
-                if state == 'key':
-                    key = 0
-                else:
-                    data = 0
-            elif x == 1:
-                thing = 'string'
-                if state == 'key':
-                    key = ''
-                else:
-                    data = ''
+            data = x
+            state = 'key'
+            res.add_data(key, data)
+            key = None
+            data = None
     return res
