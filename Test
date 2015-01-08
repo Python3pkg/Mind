@@ -4,8 +4,12 @@ by Jakov Manjkas
 aka. Knowledge
 """
 
-import Knowledge
-import Orientation
+if __name__ == '__main__':
+    import Knowledge
+    import Orientation
+else:
+    from . import Knowledge
+    from . import Orientation
 import pygame
 
 def test_know():
