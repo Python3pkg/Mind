@@ -1,17 +1,15 @@
 """
-Brain.Knowledge
-by Jakov Mankas
-aka. Knowledge
+Part of library for data saving.
 """
 
 
 def data_bytes(data):
     """
-    function that data(number, string...) converts to bytes:
-    0 - numbers(integers and floats)
-    1 - strings
-    2 - floating point
-    3 - lists begining
+    Function that data(number, string...) converts to bytes:
+    0 - numbers(integers and floats),
+    1 - strings,
+    2 - floating point,
+    3 - lists begining,
     4 - lists ending
     """
     final = bytearray()
@@ -51,7 +49,7 @@ def data_bytes(data):
 
 class Knowledge:
     """
-    class for all data in programm
+    Class for all data in programm.
     """
     def __init__(self, filename):
         self.data = {}
@@ -68,11 +66,13 @@ class Knowledge:
         return self.ret[:-1]  # so last \n is deleted
 
     def add_data(self, key, info):
+        """Adds data to Knowledge object."""
         self.key = key
         self.info = info
         self.data[self.key] = self.info
 
     def save_data(self):
+        """Saves all data."""
         for thing in self.data:
             for bit in data_bytes(thing):
                 self.save.append(bit)
@@ -84,7 +84,7 @@ class Knowledge:
 
 def bytes_data(binary):
     """
-    function that bytes converts to data(numbers, strigns...)
+    Function that bytes converts to data(numbers, strigns...).
     """
     thing = None
     decimal = False
@@ -133,7 +133,7 @@ def bytes_data(binary):
 
 
 def load(filename):
-    """function that loads saved data and returns Knowledge object"""
+    """Function that loads saved data and returns Knowledge object."""
     with open(filename + '.knw', 'rb') as infile:
         a = bytearray(infile.read())
     res = Knowledge(filename)
