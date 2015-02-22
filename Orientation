@@ -10,7 +10,8 @@ except ImportError:
 
 
 class MapError(Exception):
-    """Exception for points outside the map."""
+    """Exception for points outside the map.*
+    """
 
     def __init__(self, x, y, max_x, max_y):
         self.x = x
@@ -32,7 +33,8 @@ class MapError(Exception):
 
 
 class MAP:
-    """Bacis map class."""
+    """Bacis map class.
+    """
 
     def __init__(self, width, height):
         self.width = width
@@ -58,7 +60,8 @@ class MAP:
         return bool(self.objects)
 
     def add_obj(self, obj):
-        """Function that adds object(point, rect...) to map"""
+        """Function that adds object(point, rect...) to map.
+        """
         self.obj = obj
         if type(self.obj) == point:
             if self.obj.x > self.width or self.obj.y > self.height:
@@ -66,7 +69,8 @@ class MAP:
         self.objects.append(self.obj)
 
     def at(self, x, y):
-        """Return generator of all items in map on x, y coordinates."""
+        """Return generator of all items in map on x, y coordinates.
+        """
         self.x = x
         self.y = y
         for obj in self.objects:
@@ -86,7 +90,8 @@ class MAP:
 
 
 class point:
-    """Basic point class."""
+    """Basic point class.
+    """
 
     def __init__(self, x, y, Map, description='Unknown'):
         self.x = x
@@ -95,12 +100,19 @@ class point:
         self.description = description
         self.Map.add_obj(self)
 
+    def __tmx_init__(x, y, width, height, Map, name):
+        if name:
+            return point(x, y, Map, name)
+        else:
+            return point(x, y, Map)
+
     def __str__(self):
         return self.description + ' @ ' + str(self.x) + ', ' + str(self.y)
 
 
 class group_of_points:
-    """class for group of points."""
+    """Class for group of points.
+    """
 
     def __init__(self, Map, description='Unknown', *points):
         self.Map = Map
@@ -121,7 +133,8 @@ class group_of_points:
         return self.fin
 
     def at(self, x, y):
-        """Return generator of all items in group on x, y coordinates."""
+        """Return generator of all items in group on x, y coordinates.
+        """
         self.x = x
         self.y = y
         for Point in self.points:
@@ -130,7 +143,8 @@ class group_of_points:
 
 
 class rect:
-    """Bacis map rect class."""
+    """Bacis map rect class.
+    """
 
     def __init__(self, x, y, width, height, Map, description='Unknown'):
         self.x = x
@@ -166,17 +180,20 @@ class rect:
             repr(self.item))
 
     def at(self, x, y):
-        """Test if point is in rect."""
+        """Test if point is in rect.*
+        """
         return self.x + self.width >= x >= self.x and self.y + \
         self.height >= y >= self.y
 
 if imported_tiled:
 
     class tiled_map:
-        """Class for map in tiled."""
+        """Class for map in tiled.
+        """
 
-        def __init__(self, name):
+        def __init__(self, name, decoder={"p": point}):
             self.name = name
+            self.decoder = decoder
             self.out_map = tiledtmxloader.tmxreader.TileMapParser().\
             parse_decode(self.name + '.tmx')
             self.out_objects = tiledtmxloader.helperspygame.\
@@ -187,15 +204,20 @@ if imported_tiled:
             get_layers_from_map(self.out_objects)
             self.in_map = MAP(self.out_map.pixel_width,
             self.out_map.pixel_height)
+            self.objects = []
             for layer in self.layers:
                 if layer.is_object_group:
                     for obj in layer.objects:
-                        if obj.name:
-                            self.in_map.add_obj(rect(obj.x, obj.y,
+                        if obj.type in decoder:
+                            self.objects.append(self.decoder[obj.type].__tmx_init__(obj.x, obj.y,
                             obj.width, obj.height, self.in_map, obj.name))
                         else:
-                            self.in_map.add_obj(rect(obj.x, obj.y,
-                            obj.width, obj.height, self.in_map))
+                            if obj.name:
+                                self.objects.append(rect(obj.x, obj.y,
+                                obj.width, obj.height, self.in_map, obj.name))
+                            else:
+                                self.objects.append(rect(obj.x, obj.y,
+                                obj.width, obj.height, self.in_map))
             self.edge_width = self.in_map.width
             self.edge_height = self.in_map.height
             self.edge_x, self.edge_y = 0, 0
@@ -204,45 +226,55 @@ if imported_tiled:
             return repr(self.in_map)
 
         def set_screen(self, screen):
-            """Sets screen (pygame) on which will map be blited."""
+            """Sets screen (pygame) on which will map be blited.
+            """
             self.screen = screen
             self.screen_w, self.screen_h = self.screen.get_size()
-            self.renderer.set_camera_position_and_size(0, 0, self.screen_w, self.screen_h)
+            self.renderer.set_camera_position_and_size(0, 0, self.screen_w,
+            self.screen_h)
 
         def set_camera_pos(self, x, y, edge=True):
-            """Sets camera position (centre), if edge is True it won't be outside the map."""
+            """Sets camera position (centre), if edge is True it won't be
+            outside the map.
+            """
             self.x = x
             self.y = y
             self.edge = edge
             if self.edge:
-                self.x = max([self.edge_x + self.screen_w / 2, min([self.x, self.edge_width - self.screen_w / 2])])
-                self.y = max([self.edge_y + self.screen_h / 2, min([self.y, self.edge_height - self.screen_h / 2])])
+                self.x = max([self.edge_x + self.screen_w / 2, min([self.x,
+                self.edge_width - self.screen_w / 2])])
+                self.y = max([self.edge_y + self.screen_h / 2, min([self.y,
+                self.edge_height - self.screen_h / 2])])
             self.renderer.set_camera_position(self.x, self.y)
             return (self.x, self.y)
 
         def get_camera_pos(self):
-            """Returns camera position"""
+            """Returns camera position.
+            """
             return (self.x, self.y)
 
         def blit(self):
-            """Blits map (on seted screen)."""
+            """Blits map (on seted screen).
+            """
             for layer in self.layers:
                 if not layer.is_object_group:
                     self.renderer.render_layer(self.screen, layer)
 
         def set_edge(self, width, height):
-            """Sets edge of map."""
+            """Sets edge of map.
+            """
             self.edge_width = width
             self.edge_height = height
 
         def offset(self, x, y):
-            """Sets how off map is."""
+            """Sets how off map is.
+            """
             self.edge_x = x
             self.edge_y = y
 
-
     class map_obj:
-        """Basic Map object."""
+        """Basic Map object.
+        """
         def __init__(self, x, y, Map, picture, name='Unknown'):
             self.x = x
             self.y = y
@@ -250,23 +282,31 @@ if imported_tiled:
             self.picture = picture
             self.name = name
 
+        def __tmx_init__(x, y, width, height, Map, name):
+            return map_obj(x, y, Map, None, name)
+
         def blit(self):
-            """Blits object picture on Map screen."""
-            self.Map.screen.blit(self.picture, (self.x - self.Map.x + self.Map.screen_w / 2, self.y - self.Map.y + self.Map.screen_h / 2))
+            """Blits object picture on Map screen.*
+            """
+            self.Map.screen.blit(self.picture, (self.x - self.Map.x +
+            self.Map.screen_w / 2, self.y - self.Map.y + self.Map.screen_h
+            / 2))
 
         def set_position(self, x, y):
-            """Sets position of object."""
+            """Sets position of object.
+            """
             self.x = x
             self.y = y
 
         def move(self, x, y):
-            """Moves objetct."""
+            """Moves objetct.
+            """
             self.x += x
             self.y += y
 
-
     class moving_map(tiled_map):
-        """Map in which moving is very easy."""
+        """Map in which moving is very easy.
+        """
 
         def __init__(self, name, x, y, screen, edge=True):
             super().__init__(name)
@@ -277,18 +317,20 @@ if imported_tiled:
             self.set_camera_pos(self.X, self.Y, self.edge)
 
         def set_position(self, x, y):
-            """Sets position of map 'center object'."""
+            """Sets position of map 'center object'.
+            """
             self.X = x
             self.Y = y
             self.set_camera_pos(self.X, self.Y, self.edge)
 
         def get_position(self):
-            """Returns 'center object' position."""
+            """Returns 'center object' position.
+            """
             return (self.X, self.Y)
 
         def move(self, x, y):
-            """Moves 'center object'"""
+            """Moves 'center object'.
+            """
             self.X += x
             self.Y += y
             self.set_camera_pos(self.X, self.Y, self.edge)
-
