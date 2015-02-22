@@ -10,7 +10,7 @@ def data_bytes(data):
     1 - strings,
     2 - floating point,
     3 - lists begining,
-    4 - lists ending
+    4 - lists ending.*
     """
     final = bytearray()
     if type(data) == str:
@@ -65,11 +65,11 @@ class Knowledge:
             self.ret += '\n'
         return self.ret[:-1]  # so last \n is deleted
 
-    def add_data(self, key, info):
-        """Adds data to Knowledge object."""
-        self.key = key
-        self.info = info
-        self.data[self.key] = self.info
+    def __getitem__(self, key):
+        return self.data[key]
+
+    def __setitem__(self, key, value):
+        self.data[key] = value
 
     def save_data(self):
         """Saves all data."""
@@ -84,11 +84,12 @@ class Knowledge:
 
 def bytes_data(binary):
     """
-    Function that bytes converts to data(numbers, strigns...).
+    Function that bytes converts to data(numbers, strigns...).*
     """
     thing = None
     decimal = False
     ret = None
+    nested = 0
     for x in binary:
         if thing == 'integer':
             if x == 0:
@@ -111,13 +112,19 @@ def bytes_data(binary):
             else:
                 ret += chr(x)
         elif thing == 'list':
+            if x == 3:
+                nested += 1
             if x == 4:
-                thing = None
-                fin = []
-                for b in bytes_data(ret):
-                    fin.append(b)
-                yield fin
-                ret = None
+                if nested:
+                    nested -= 1
+                    ret.append(x)
+                else:
+                    thing = None
+                    fin = []
+                    for b in bytes_data(ret):
+                        fin.append(b)
+                    yield fin
+                    ret = None
             else:
                 ret.append(x)
         else:
@@ -133,7 +140,8 @@ def bytes_data(binary):
 
 
 def load(filename):
-    """Function that loads saved data and returns Knowledge object."""
+    """Function that loads saved data and returns Knowledge object.
+    """
     with open(filename + '.knw', 'rb') as infile:
         a = bytearray(infile.read())
     res = Knowledge(filename)
@@ -147,7 +155,7 @@ def load(filename):
         else:
             data = x
             state = 'key'
-            res.add_data(key, data)
+            res[key] = data
             key = None
             data = None
     return res
