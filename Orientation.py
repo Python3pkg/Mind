@@ -7,19 +7,12 @@ try:
     import tiledtmxloader
 except ImportError:
     imported_tiled = False
-<<<<<<< HEAD
 import math
-=======
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
 
 class MapError(Exception):
     """Exception for points outside the map.*
     """
-<<<<<<< HEAD
-=======
-
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     def __init__(self, x, y, max_x, max_y):
         self.x = x
         self.y = y
@@ -42,10 +35,6 @@ class MapError(Exception):
 class MAP:
     """Bacis map class.
     """
-<<<<<<< HEAD
-=======
-
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -53,22 +42,14 @@ class MAP:
 
     def __repr__(self):
         if self.objects:
-<<<<<<< HEAD
             self.fin = 'Map ' + str(self.width) + "x" + str(self.height) + ":\n"
-=======
-            self.fin = ''
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
             self.count = 1
             for obj in self.objects:
                 self.fin += str(self.count) + '. ' + str(obj) + '\n'
                 self.count += 1
             return self.fin[:-1]
         else:
-<<<<<<< HEAD
             return "Empty Map " + str(self.width) + "x" + str(self.height) + ":"
-=======
-            return 'Empty map'
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
     def __contains__(self, item):
         self.item = item
@@ -110,25 +91,16 @@ class MAP:
 class point:
     """Basic point class.
     """
-<<<<<<< HEAD
     blits = False
 
     def __init__(self, x, y, Map, description='Unknown', quiet=False):
-=======
-
-    def __init__(self, x, y, Map, description='Unknown'):
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         self.x = x
         self.y = y
         self.Map = Map
         self.description = description
-<<<<<<< HEAD
         if not quiet:
             self.Map.add_obj(self)
         self.name = self.description
-=======
-        self.Map.add_obj(self)
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
     def __tmx_init__(x, y, width, height, Map, name):
         if name:
@@ -136,7 +108,6 @@ class point:
         else:
             return point(x, y, Map)
 
-<<<<<<< HEAD
     def __tmx_a_init__(x, y, width, height, Map, name, **prop):
         return ext_obj(point.__tmx_init__(x, y, width, height, Map, name), **prop)
 
@@ -368,38 +339,20 @@ class direction:
         self.angle += change
         self.rd = math.radians(self.angle)
 
-=======
-    def __str__(self):
-        return self.description + ' @ ' + str(self.x) + ', ' + str(self.y)
-
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
 class group_of_points:
     """Class for group of points.
     """
-<<<<<<< HEAD
     blits = False
 
     def __init__(self, Map, description='Unknown', *points, quiet=False):
-=======
-
-    def __init__(self, Map, description='Unknown', *points):
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         self.Map = Map
         self.description = description
         self.points = points
         self.counter = 0
-<<<<<<< HEAD
         if not quiet:
             self.Map.add_obj(self)
         self.name = self.description
-=======
-        for x in range(len(self.Map.objects)):
-            if self.Map.objects[x - self.counter] in self.points:
-                del self.Map.objects[x - self.counter]
-                self.counter += 1
-        self.Map.add_obj(self)
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
     def __str__(self):
         self.fin = self.description + ' group ['
@@ -408,11 +361,8 @@ class group_of_points:
         self.fin = self.fin[:-2] + ']'
         return self.fin
 
-<<<<<<< HEAD
     __repr__ = __str__
 
-=======
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     def at(self, x, y):
         """Return generator of all items in group on x, y coordinates.
         """
@@ -426,20 +376,14 @@ class group_of_points:
 class rect:
     """Bacis map rect class.
     """
-<<<<<<< HEAD
     blits = False
 
     def __init__(self, x, y, width, height, Map, description='Unknown', quiet=False):
-=======
-
-    def __init__(self, x, y, width, height, Map, description='Unknown'):
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.Map = Map
-<<<<<<< HEAD
         if not quiet:
             self.Map.add_obj(self)
         self.description = description
@@ -451,15 +395,6 @@ class rect:
 
     __repr__ = __str__
 
-=======
-        self.Map.add_obj(self)
-        self.description = description
-
-    def __repr__(self):
-        return self.description + ' rect ' + str(self.width) + 'X' + \
-        str(self.height) + ' @ ' + str(self.x) + ', ' + str(self.y)
-
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     def __contains__(self, item):
         self.item = item
         if type(self.item) == point:
@@ -486,7 +421,6 @@ class rect:
         return self.x + self.width >= x >= self.x and self.y + \
         self.height >= y >= self.y
 
-<<<<<<< HEAD
     def collide(self, other):
         """Tests colliding with given rect.
         """
@@ -553,24 +487,16 @@ class ext_obj:
 
     __repr__ = __str__
 
-=======
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 if imported_tiled:
 
     class tiled_map:
         """Class for map in tiled.
         """
 
-<<<<<<< HEAD
         def __init__(self, name, r_decoder={"p": point}, a_decoder={"P": point}):
             self.name = name
             self.r_decoder = r_decoder
             self.a_decoder = a_decoder
-=======
-        def __init__(self, name, decoder={"p": point}):
-            self.name = name
-            self.decoder = decoder
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
             self.out_map = tiledtmxloader.tmxreader.TileMapParser().\
             parse_decode(self.name + '.tmx')
             self.out_objects = tiledtmxloader.helperspygame.\
@@ -585,7 +511,6 @@ if imported_tiled:
             for layer in self.layers:
                 if layer.is_object_group:
                     for obj in layer.objects:
-<<<<<<< HEAD
                         if obj.type in self.r_decoder:
                             self.objects.append(self.r_decoder[obj.type].__tmx_init__(obj.x, obj.y,
                             obj.width, obj.height, self.in_map, obj.name))
@@ -599,18 +524,6 @@ if imported_tiled:
                             else:
                                 self.objects.append(ext_obj(rect(obj.x, obj.y,
                                 obj.width, obj.height, self.in_map, quiet=True), type=obj.type, **obj.properties))
-=======
-                        if obj.type in decoder:
-                            self.objects.append(self.decoder[obj.type].__tmx_init__(obj.x, obj.y,
-                            obj.width, obj.height, self.in_map, obj.name))
-                        else:
-                            if obj.name:
-                                self.objects.append(rect(obj.x, obj.y,
-                                obj.width, obj.height, self.in_map, obj.name))
-                            else:
-                                self.objects.append(rect(obj.x, obj.y,
-                                obj.width, obj.height, self.in_map))
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
             self.edge_width = self.in_map.width
             self.edge_height = self.in_map.height
             self.edge_x, self.edge_y = 0, 0
@@ -653,7 +566,6 @@ if imported_tiled:
                 if not layer.is_object_group:
                     self.renderer.render_layer(self.screen, layer)
 
-<<<<<<< HEAD
             for obj in self.objects:
                 if obj.blits:
                     obj.blit()
@@ -670,8 +582,6 @@ if imported_tiled:
             else:
                 return None
 
-=======
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         def set_edge(self, width, height):
             """Sets edge of map.
             """
@@ -687,11 +597,8 @@ if imported_tiled:
     class map_obj:
         """Basic Map object.
         """
-<<<<<<< HEAD
         blits = True
 
-=======
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         def __init__(self, x, y, Map, picture, name='Unknown'):
             self.x = x
             self.y = y
@@ -705,7 +612,6 @@ if imported_tiled:
         def blit(self):
             """Blits object picture on Map screen.*
             """
-<<<<<<< HEAD
             self.Map.screen.blit(self.picture, self.get_blit())
 
         def get_blit(self):
@@ -713,11 +619,6 @@ if imported_tiled:
             """
             return (self.x - self.Map.x + self.Map.screen_w / 2, self.y -
             self.Map.y + self.Map.screen_h / 2)
-=======
-            self.Map.screen.blit(self.picture, (self.x - self.Map.x +
-            self.Map.screen_w / 2, self.y - self.Map.y + self.Map.screen_h
-            / 2))
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
         def set_position(self, x, y):
             """Sets position of object.
@@ -735,13 +636,8 @@ if imported_tiled:
         """Map in which moving is very easy.
         """
 
-<<<<<<< HEAD
         def __init__(self, name, x, y, screen, edge=True, decoder={"p": point}):
             super().__init__(name, decoder)
-=======
-        def __init__(self, name, x, y, screen, edge=True):
-            super().__init__(name)
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
             self.set_screen(screen)
             self.X = x
             self.Y = y

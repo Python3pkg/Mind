@@ -17,20 +17,17 @@ def test_know():
     This test Mind.Knowledge.Knowledge
     """
     save = Knowledge.Knowledge('test')
-<<<<<<< HEAD
     save['Player'] = 'live'
     save['Position'] = 1
     save[5] = 12.44
     save[3.1] = [1, "aaa", [1, 2], 5]
     print(save)
     print(save["player"])
-=======
     save.add_data('Player', 'live')
     save.add_data('Position', 1)
     save.add_data(5, 12.44)
     save.add_data(3.1, [1, "aaa", [1, 2], 5])
     print(save)
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     save.save_data()
 
 
@@ -41,15 +38,12 @@ def test_load():
     """
     load = Knowledge.load('test')
     print(load)
-<<<<<<< HEAD
     load[623] = 'a'
     load.save_data()
     load[11] = 22
-=======
     load.add_data(623, 'a')
     load.save_data()
     load.add_data(11, 22)
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     load = Knowledge.load('test')
     print(load)
 
@@ -77,11 +71,7 @@ def test_map():
 
 def test_tiled_map(file_name):
     """
-<<<<<<< HEAD
     This test Mind.Orientation.tiled_map .
-=======
-    This test Mind.Orientation.tiled_map
->>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     """
     Map = Orientation.tiled_map(file_name)
     pygame.init()
