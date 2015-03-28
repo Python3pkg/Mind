@@ -48,7 +48,12 @@ def data_bytes(data):
 
 
 class Knowledge:
+<<<<<<< HEAD
     """Class for all data in programm.
+=======
+    """
+    Class for all data in programm.
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     """
     def __init__(self, filename):
         self.data = {}
@@ -71,8 +76,12 @@ class Knowledge:
         self.data[key] = value
 
     def save_data(self):
+<<<<<<< HEAD
         """Saves all data.
         """
+=======
+        """Saves all data."""
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         for thing in self.data:
             for bit in data_bytes(thing):
                 self.save.append(bit)
@@ -83,7 +92,12 @@ class Knowledge:
 
 
 def bytes_data(binary):
+<<<<<<< HEAD
     """Function that bytes converts to data(numbers, strigns...).*
+=======
+    """
+    Function that bytes converts to data(numbers, strigns...).*
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     """
     thing = None
     decimal = False

@@ -4,6 +4,7 @@ Part of library for Main Menu.
 
 import pygame
 
+<<<<<<< HEAD
 ARROWS = [(pygame.K_UP, "up"), (pygame.K_DOWN, "down"), (pygame.K_LEFT, "left"), (pygame.K_RIGHT, "right")]
 """List of keys (arrows) for Menu changing index.
 """
@@ -15,6 +16,16 @@ HIT = [(pygame.K_RETURN, "hit"), (pygame.K_SPACE, "hit")]
 def useless(*useless_args):
     """Function that doesn't do anything.
     """
+=======
+ARROWS = [(pygame.K_UP, pygame.K_DOWN)]
+"""List of keys (arrows) for Menu changing index."""
+HIT = [pygame.K_RETURN, pygame.K_SPACE]
+"""List of keys for Menu selecting option."""
+
+
+def useless(*args):
+    """Function that doesn't do anything."""
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     pass
 
 
@@ -72,6 +83,7 @@ def link(place):
     """Returns function which leads game to onother place.
     """
     def function(obj, self):
+<<<<<<< HEAD
         obj.game.change(place)
     return function
 
@@ -82,6 +94,12 @@ def Quit(obj, self):
     obj.game.kill()
 
 
+=======
+        obj.game.current = place
+    return function
+
+
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 def joied(List):
     """Returns function which executes all function in a given list.
     """
@@ -129,15 +147,20 @@ class Game:
     """
     def __init__(self, main_place):
         self.current = main_place
+<<<<<<< HEAD
         self.current.activate()
         self.menues = []
         self.running = True
+=======
+        self.menues = []
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
     def add_menu(self, menu):
         """Adds menu to game.
         """
         self.menues.append(menu)
 
+<<<<<<< HEAD
     def blit(self):
         """Blits game current menu.
         """
@@ -145,10 +168,19 @@ class Game:
             for menu in self.menues:
                 if self.current in menu.places:
                     menu.blit()
+=======
+    def blit(self, event_get):
+        """Blits game current menu.
+        """
+        for menu in self.menues:
+            if self.current in menu.places:
+                menu.blit(event_get)
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
     def change(self, new):
         """Change game current menu.
         """
+<<<<<<< HEAD
         self.current.deactivate()
         self.current = new
         self.current.activate()
@@ -167,6 +199,12 @@ class Game:
 class Hyper_game:
     """Game for easy places controlling.
     """
+=======
+        self.current = new
+
+
+class Hyper_game:
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     def __init__(self):
         self.places = []
         self.menues = []
@@ -178,10 +216,17 @@ class Hyper_game:
         self.menues.append(menu)
         self.places.append(PLACE())
 
+<<<<<<< HEAD
     def blit(self):
         """Blits game current menu.
         """
         self.menues[self.index].blit()
+=======
+    def blit(self, event_get):
+        """Blits game current menu.
+        """
+        self.menues[self.index].blit(event_get)
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
     def set_menu(self, menu):
         """Sets game current menu.
@@ -191,6 +236,7 @@ class Hyper_game:
                 self.index = pos
 
 
+<<<<<<< HEAD
 class Keyboard:
     """Bacis keyboard class.
     """
@@ -244,6 +290,12 @@ class Main_menu:
     """
     def __init__(self, places, distance, *options, off=(0, 0),  # lint:ok
         off_type='pixel', keyboard=Keyboard(ARROWS+HIT)):
+=======
+class Main_menu:
+    """Basic menu class."""
+    def __init__(self, places, distance, *options, off=(0, 0),  # lint:ok
+        off_type='pixel', keyboard=ARROWS, hit=HIT):
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         self.places = places
         if type(self.places) != list:
             self.places = [self.places]
@@ -254,12 +306,23 @@ class Main_menu:
         self.off = off
         self.off_type = off_type
         self.keyboard = keyboard
+<<<<<<< HEAD
+=======
+        if self.keyboard:
+            self.up = [i[0] for i in self.keyboard]
+            self.down = [i[1] for i in self.keyboard]
+        self.hit = hit
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         self.center = (self.screen.get_size()[0] / 2, self.screen.
         get_size()[1] / 2)
         if self.off_type == 'pixel':
             self.center = (self.center[0] + self.off[0], self.center[1] +
             self.off[1])
+<<<<<<< HEAD
         if self.off_type in ('percent', '%'):
+=======
+        if self.off_type in ['percent', '%']:
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
             self.center = (self.center[0] + self.screen_w * self.off[0] /
             100, self.center[1] + self.screen_h * self.off[1] / 100)
 
@@ -275,15 +338,23 @@ class Main_menu:
         return fin
 
     def add_option(self, option, seted_option=False):
+<<<<<<< HEAD
         """Adds new option to menu.
         """
+=======
+        """Adds new option to menu."""
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         self.options.append(option)
         if seted_option:
             self.current = option
 
     def set_options(self):
+<<<<<<< HEAD
         """Should be executed on the end of options adding.
         """
+=======
+        """Should be executed on the end of options adding."""
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         self.first_y = self.center[1] - (len(self.options) - 1) / 2 *\
         self.distance
         for pos, opt in enumerate(self.options):
@@ -299,6 +370,7 @@ class Main_menu:
         self.game = game
         self.game.add_menu(self)
 
+<<<<<<< HEAD
     def blit(self):
         """Blits menu.
         """
@@ -330,6 +402,34 @@ class Main_menu:
         """Turns on all options in Main Menu
         """
 
+=======
+    def blit(self, event_get):
+        """Blits menu.
+        """
+        self.event_get = event_get
+        for event in event_get:
+            if event.type == pygame.KEYDOWN:
+                if self.keyboard:
+                    if event.key in self.up:
+                        self.current.un_bold()
+                        self.index -= 1
+                        if self.index < 0:
+                            self.index = len(self.options) - 1
+                        self.current = self.options[self.index]
+                        self.current.bold()
+                    if event.key in self.down:
+                        self.current.un_bold()
+                        self.index += 1
+                        if self.index > len(self.options) - 1:
+                            self.index = 0
+                        self.current = self.options[self.index]
+                        self.current.bold()
+                if event.key in self.hit:
+                    self.current.hit()
+        for opt in self.options:
+            opt.blit()
+
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
 
 class option:
     """Bacis menu option class.
@@ -464,8 +564,12 @@ class text_option(option):
 
 class text_pusher(pusher):
     """Textual independed option class (mostly used in text_option class,
+<<<<<<< HEAD
     subclass of pusher).*
     """
+=======
+    subclass of pusher).*"""
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
     def __init__(self, x1, y1, font, text, color, obj, do1, do2, time,
         pos_do, anti_pos_do, infinity, proces):
         self.font = font
@@ -476,6 +580,10 @@ class text_pusher(pusher):
         proces)
 
     def update(self):
+<<<<<<< HEAD
         """Updates pusher.*
         """
+=======
+        """Updates pusher.*"""
+>>>>>>> 74a9ded4a2bfac97fa7f274ab3d2c2b42ef46538
         self.image = self.font.render(self.text, True, self.color)
