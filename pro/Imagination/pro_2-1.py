@@ -8,7 +8,7 @@ pygame.init()
 
 font = pygame.font.SysFont(None, 50)
 
-Main_menu = Imagination.Main_menu(Imagination.PLACE(True), 150)
+Main_menu = Imagination.Vertical_menu(Imagination.PLACE(True), 150)
 keyboard = Main_menu.get_keyboard()
 keyboard.extend([(pygame.K_ESCAPE, "quit")])
 

@@ -1,0 +1,8 @@
+_*
+!__init__.py
+*.tmx
+*.knw
+*.db
+*.bmp
+*.png
+*.bat

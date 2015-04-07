@@ -13,43 +13,62 @@ import math
 class MapError(Exception):
     """Exception for points outside the map.*
     """
-    def __init__(self, x, y, max_x, max_y):
+    def __init__(self, x, y, max_x, max_y, min_x, min_y):
         self.x = x
         self.y = y
         self.max_x = max_x
         self.max_y = max_y
+        self.min_x = min_x
+        self.min_y = min_y
 
     def __str__(self):
         self.fin = ''
         if self.x > self.max_x:
-            self.fin += 'x should be reduced by ' + str(self.x -
+            self.fin += 'x should be decreased by ' + str(self.x -
             self.max_x)
             if self.y > self.max_y:
                 self.fin += ', '
         if self.y > self.max_y:
-            self.fin += 'y should be reduced by ' + str(self.y -
+            self.fin += 'y should be decreased by ' + str(self.y -
             self.max_y)
+        if self.x < self.min_y:
+            self.fin += 'x should be increased by ' + str(abs(self.x -
+            self.min_x))
+            if self.y < self.min_y:
+                self.fin += ', '
+        if self.y > self.max_y:
+            self.fin += 'y should be increased by ' + str(abs(self.y -
+            self.min_y))
         return self.fin
 
 
 class MAP:
-    """Bacis map class.
+    """Basic map class.
+
+    :param int width: width of map
+    :param int height: height of map
+    :param int m_width: width on negative side
+    :param int m_height: height on negative side
     """
-    def __init__(self, width, height):
+    def __init__(self, width, height, m_width=0, m_height=0):
         self.width = width
         self.height = height
+        self.m_width = m_width
+        self.m_height = m_height
         self.objects = []
 
     def __repr__(self):
         if self.objects:
-            self.fin = 'Map ' + str(self.width) + "x" + str(self.height) + ":\n"
+            self.fin = 'Map ' + str(self.width) + "x" + str(self.height) +\
+            ":\n"
             self.count = 1
             for obj in self.objects:
                 self.fin += str(self.count) + '. ' + str(obj) + '\n'
                 self.count += 1
             return self.fin[:-1]
         else:
-            return "Empty Map " + str(self.width) + "x" + str(self.height) + ":"
+            return "Empty Map " + str(self.width) + "x" + str(self.height)\
+            + ":"
 
     def __contains__(self, item):
         self.item = item
@@ -59,7 +78,7 @@ class MAP:
         return bool(self.objects)
 
     def add_obj(self, obj):
-        """Function that adds object(point, rect...) to map.
+        """Function that adds object(point, rect...) to map.*
         """
         self.obj = obj
         if type(self.obj) == point:
@@ -69,6 +88,10 @@ class MAP:
 
     def at(self, x, y):
         """Return generator of all items in map on x, y coordinates.
+
+        :param int x: *x* position of coordinate
+        :param int y: *y* position of coordinate
+        :returns: iterator of all objects on that coordinates or ``None``
         """
         self.x = x
         self.y = y
@@ -90,6 +113,13 @@ class MAP:
 
 class point:
     """Basic point class.
+
+    :param int x: *x* position of point
+    :param int y: *y* position of point
+    :param Map: map on which will point be added
+    :type Map: :py:class:`MAP`
+    :param str description: point description
+    :param bool quiet: if ``True`` won't appear on map
     """
     blits = False
 
@@ -109,7 +139,8 @@ class point:
             return point(x, y, Map)
 
     def __tmx_a_init__(x, y, width, height, Map, name, **prop):
-        return ext_obj(point.__tmx_init__(x, y, width, height, Map, name), **prop)
+        return ext_obj(point.__tmx_init__(x, y, width, height, Map, name),
+        **prop)
 
     def __str__(self):
         return self.description + ' @ ' + str(self.x) + ', ' + str(self.y)
@@ -118,27 +149,43 @@ class point:
 
     def distance(self, other):
         """Calculates distance between this and given point.
+
+        :param other: other point
+        :type point: :py:class:`point`
+        :return: distance  between this and other point
         """
         self.other = other
-        return math.sqrt(abs(self.x - other.x) ** 2 + abs(self.y - other.y) ** 2)
+        return math.sqrt(abs(self.x - other.x) ** 2 + abs(self.y - other.y)
+        ** 2)
 
     def get_xy(self):
         """Returns point's x and y.
+
+        :returns: tuple of two integers (x and y)
         """
         return (self.x, self.y)
 
 
 class line:
     """Basic line class.
+
+    :param tuple points: tuple of two points on line
+    :param Map: Map on which will line be added
+    :type Map: :py:class:`MAP`
+    :param str description: line description
+    :param bool quiet: if ``True`` won't appear on map
+    :param bool from_line_seg: do not use (helps to the library)
     """
     blits = False
 
-    def __init__(self, points, Map, description='Unknown', quiet=False, from_line_seg=False):
+    def __init__(self, points, Map, description='Unknown', quiet=False,
+        from_line_seg=False):
         self.points = points
         if from_line_seg:
             self.segment = from_line_seg
         else:
-            self.segment = line_seg(self.points, Map, quiet=True, from_line=self)
+            self.segment = line_seg(self.points, Map, quiet=True,
+            from_line=self)
         self.Map = Map
         self.description = description
         if not quiet:
@@ -148,7 +195,8 @@ class line:
         self.cof = self.segment.cof
 
     def __str__(self):
-        return self.description + ' line (' + str(self.points[0]) + ', ' + str(self.points[1]) + ')'
+        return self.description + ' line (' + str(self.points[0]) + ', '\
+        + str(self.points[1]) + ')'
 
     __repr__ = __str__
 
@@ -168,18 +216,27 @@ class line:
         return False
 
     def get_angle(self):
-        """Returns line anlge.
+        """Returns line angle.
+
+        :returns: smallest angle in relation to y-axis
         """
         return self.segment.get_angle()
-            
 
 
 class line_seg:
     """Bacis line segment class.
+
+    :param tuple points: tuple of end points on line
+    :param Map: Map on which will line segment be added
+    :type Map: :py:class:`MAP`
+    :param str description: line description
+    :param bool quiet: if ``True`` won't appear on map
+    :param bool from_line: do not use (helps to the library)
     """
     blits = False
 
-    def __init__(self, points, Map, description='Unknown', quiet=False, from_line=False):
+    def __init__(self, points, Map, description='Unknown', quiet=False,
+        from_line=False):
         self.points = points
         self.Map = Map
         self.description = description
@@ -195,13 +252,15 @@ class line_seg:
         if from_line:
             self.line = from_line
         else:
-            self.line = line(self.points, self.Map, quiet=True, from_line_seg=self)
+            self.line = line(self.points, self.Map, quiet=True,
+            from_line_seg=self)
 
     def __len__(self):
         return int(self.points[0].distance(self.points[1]))
 
     def __str__(self):
-        return self.description + ' line segment (' + str(self.points[0]) + ', ' + str(self.points[1]) + ')'
+        return self.description + ' line segment (' + str(self.points[0])
+        + ', ' + str(self.points[1]) + ')'
 
     __repr__ = __str__
 
@@ -227,15 +286,23 @@ class line_seg:
         return False
 
     def get_angle(self):
-        """Returns line rotation (0 vertical, 90 horizontal) in range 0 - 180.
+        """Returns line angle.
+
+        :returns: smallest angle in relation to y-axis
         """
         if self.cof == "horizontal":
             return 90.0
-        return math.degrees(math.atan(self.x_dif/self.y_dif))
+        return math.degrees(math.atan(self.x_dif / self.y_dif))
 
 
 def q_points(x1, y1, x2, y2, Map):
-    """Returns points for line and line_seg.
+    """Returns points for :py:class:`line` and :py:class:`line_seg`.
+
+    :param int x1: x coordinate for first point
+    :param int y1: y coordinate for first point
+    :param int x2: x coordinate for second point
+    :param int y2: y coordinate for second point
+    :returns: tuple of two :py:class:`point`
     """
     p1 = point(x1, y1, Map, quiet=True)
     p2 = point(x2, y2, Map, quiet=True)
@@ -244,13 +311,24 @@ def q_points(x1, y1, x2, y2, Map):
 
 class ray:
     """Basic ray class.
+
+    :param start_p: starting point of ray
+    :type start_p: :py:class:`point`
+    :param some_p: any other point on ray
+    :type some_p: :py:class:`point`
+    :param Map: Map on which will line segment be added
+    :type Map: :py:class:`MAP`
+    :param str description: ray description
+    :param bool quiet: if ``True`` won't appear on map
     """
     blits = False
 
-    def __init__(self, start_p, some_p, Map, description='Unknown', quiet=False):
+    def __init__(self, start_p, some_p, Map, description='Unknown',
+        quiet=False):
         self.start_p = start_p
         self.some_p = some_p
-        self.line = line((self.start_p, self.some_p), Map, quiet=True, from_line_seg=True)
+        self.line = line((self.start_p, self.some_p), Map, quiet=True,
+        from_line_seg=True)
         self.line_seg = self.line.segment
         self.Map = Map
         if not quiet:
@@ -278,21 +356,31 @@ class ray:
                     if self.start_p.y < self.P.y:
                         return True
             else:
-                if ((self.start_p.y > self.other.y and self.start_p > self.some_p)  or
-                (self.start_p.y < self.other.y and self.start_p.y < self.some_p.y)) and\
-                ((self.start_p.x > self.other.x and self.start_p > self.some_p) or
-                (self.start_p.x < self.P.x and self.start_p > self.some_p)):
+                if ((self.start_p.y > self.other.y and self.start_p >
+                self.some_p) or (self.start_p.y < self.other.y and
+                self.start_p.y < self.some_p.y)) and ((self.start_p.x >
+                self.other.x and self.start_p > self.some_p) or
+                (self.start_p.x < self.P.x and self.start_p >
+                self.some_p)):
                     return True
         return False
 
 
-
 class direction:
-    """Bacis direction class.
+    """Basic direction class.
+
+    :param point: point of direction
+    :type point: :py:class:`point`
+    :param int angle: direction angle
+    :param Map: Map on which will direction be added
+    :type Map: :py:class:`MAP`
+    :param str description: direction description
+    :param bool quiet: if ``True`` won't appear on map
     """
     blits = False
 
-    def __init__(self, point, angle, Map, description='Unknown', quiet=False):
+    def __init__(self, point, angle, Map, description='Unknown',
+        quiet=False):
         self.angle = angle
         self.rd = math.radians(self.angle)
         self.point = point
@@ -302,39 +390,54 @@ class direction:
             self.Map.add_obj(self)
 
     def __str__(self):
-        return self.description + " direction @" + str(self.point.x) + ", " + str(self.point.y) + "; angle: " + str(self.angle)
+        return self.description + " direction @" + str(self.point.x) +\
+        ", " + str(self.point.y) + "; angle: " + str(self.angle)
 
     __repr__ = __str__
 
     def get_pos(self, distance):
         """Gets point of direction with given distance.
+
+        :param int distance: how far from direction point is
+        :returns: point on *distance* far away from direction point
+        :rtype: :py:class:`point`
         """
         self.distance = distance
         if self.angle == 0:
-            return point(self.point.x, self.point.y - self.distance, self.Map, quiet=True)
+            return point(self.point.x, self.point.y - self.distance,
+            self.Map, quiet=True)
         else:
             self.x = math.sin(self.rd) * self.distance
             self.y = math.cos(self.rd) * self.distance
-            return point(self.point.x + self.x, self.point.y - self.y, self.Map, quiet=True)
+            return point(self.point.x + self.x, self.point.y - self.y,
+            self.Map, quiet=True)
 
     def move(self, distance):
         """'Moves' directions point.
+
+        :param int distance: how far will direction be moved
         """
         self.point.x, self.point.y = self.get_pos(distance).get_xy()
 
     def set_angle(self, angle):
         """Sets new angle.
+
+        :param int angle: new angle for direction
         """
         self.angle = angle
         self.rd = math.radians(self.angle)
 
     def get_angle(self):
         """Returns direction angle.
+
+        :returns: direction angle
         """
         return self.angle
 
     def ch_angle(self, change):
         """Changes angle for given value.
+
+        :param int change: how much will angle be increased
         """
         self.angle += change
         self.rd = math.radians(self.angle)
@@ -342,6 +445,12 @@ class direction:
 
 class group_of_points:
     """Class for group of points.
+
+    :param Map: map on which will group be added
+    :type Map: :py:class:`MAP`
+    :param str description: group description
+    :param points: group points
+    :param bool quiet: if ``True`` won't appear on map
     """
     blits = False
 
@@ -364,7 +473,11 @@ class group_of_points:
     __repr__ = __str__
 
     def at(self, x, y):
-        """Return generator of all items in group on x, y coordinates.
+        """Return generator of all points in group on x, y coordinates.
+
+        :param int x: x coordinate of position
+        :param int y: y coordinate of position
+        :returns: iterator of all points on that position
         """
         self.x = x
         self.y = y
@@ -374,11 +487,21 @@ class group_of_points:
 
 
 class rect:
-    """Bacis map rect class.
+    """Basic map rect class.
+
+    :param int x: x position of rect
+    :param int y: y position of rect
+    :param int width: rect width
+    :param int height: rect height
+    :param Map: map on which will rect be added
+    :type Map: :py:class:`MAP`
+    :param str description: rect description
+    :param bool quiet: if ``True`` won't appear on map
     """
     blits = False
 
-    def __init__(self, x, y, width, height, Map, description='Unknown', quiet=False):
+    def __init__(self, x, y, width, height, Map, description='Unknown',
+        quiet=False):
         self.x = x
         self.y = y
         self.width = width
@@ -423,14 +546,20 @@ class rect:
 
     def collide(self, other):
         """Tests colliding with given rect.
+
+        :param other: other rect
+        :type other: :py:class:`rect`
+        :return: list of four integers (how much are they colliding), first for right, second for down...
         """
         self.fin = [0, 0, 0, 0]
-        if self.y + self.height > other.y and self.y < other.y + other.height:
+        if self.y + self.height > other.y and self.y < other.y +\
+        other.height:
             if other.x + other.width > self.x + self.width > other.x:
                 self.fin[0] = self.x + self.width - other.x
             if self.x + self.width > other.x + other.width > self.x:
                 self.fin[2] = other.x + other.width - self.x
-        if self.x + self.width > other.x and self.x < other.x + other.width:
+        if self.x + self.width > other.x and self.x < other.x +\
+        other.width:
             if other.y + other.height > self.y + self.height > other.y:
                 self.fin[1] = self.y + self.height - other.y
             if self.y + self.height > other.y + other.height > self.y:
@@ -439,16 +568,22 @@ class rect:
 
     def touch(self, other):
         """Tests touching with other rect.
+
+        :param other: other rect
+        :type other: :py:class:`rect`
+        :return: list of four booleans (are rects touching), first for right, second for down...
         """
         self.fin = [False, False, False, False]
-        if self.y + self.height > other.y and self.y < other.y + other.height:
+        if self.y + self.height > other.y and self.y < other.y +\
+        other.height:
             if self.x + self.width == other.x:
                 self.fin[0] = True
             if other.x + other.width == self.x:
                 self.fin[2] = True
-        if self.x + self.width > other.x and self.x < other.x + other.width:
+        if self.x + self.width > other.x and self.x < other.x +\
+        other.width:
             if self.y + self.height == other.y:
-                self.fin[1] =  True
+                self.fin[1] = True
             if other.y + other.height == self.y:
                 self.fin[3] = True
         return self.fin
@@ -456,6 +591,11 @@ class rect:
 
 class ext_obj:
     """Extended object class.
+
+    :param obj: object which will be extended
+    :type obj: type
+    :param args: object extended arguments
+    :param kwargs: object extended *dictionary* arguments
     """
     blits = False
 
@@ -491,9 +631,14 @@ if imported_tiled:
 
     class tiled_map:
         """Class for map in tiled.
+
+        :param str name: file name
+        :param dict r_decoder: 'decodes' objects from map into given objects
+        :param dict a_decoder: same as r_decoder, but uses tiledtmxloader object as input
         """
 
-        def __init__(self, name, r_decoder={"p": point}, a_decoder={"P": point}):
+        def __init__(self, name, r_decoder={"p": point},
+            a_decoder={"P": point}):
             self.name = name
             self.r_decoder = r_decoder
             self.a_decoder = a_decoder
@@ -512,18 +657,25 @@ if imported_tiled:
                 if layer.is_object_group:
                     for obj in layer.objects:
                         if obj.type in self.r_decoder:
-                            self.objects.append(self.r_decoder[obj.type].__tmx_init__(obj.x, obj.y,
-                            obj.width, obj.height, self.in_map, obj.name))
+                            self.objects.append(self.r_decoder[obj.type].
+                            __tmx_init__(obj.x, obj.y, obj.width,
+                            obj.height, self.in_map, obj.name))
                         elif obj.type in self.a_decoder:
-                            self.objects.append(self.r_decoder[obj.type].__tmx_a_init__(obj.x, obj.y,
-                            obj.width, obj.height, self.in_map, obj.name, obj.type, obj.properties))
+                            self.objects.append(self.r_decoder[obj.type].
+                            __tmx_a_init__(obj.x, obj.y, obj.width,
+                            obj.height, self.in_map, obj.name, obj.type,
+                            obj.properties))
                         else:
                             if obj.name:
-                                self.objects.append(ext_obj(rect(obj.x, obj.y,
-                                obj.width, obj.height, self.in_map, obj.name, quiet=True), type=obj.type, **obj.properties))
+                                self.objects.append(ext_obj(rect(obj.x,
+                                obj.y, obj.width, obj.height, self.in_map,
+                                obj.name, quiet=True), type=obj.type,
+                                **obj.properties))
                             else:
-                                self.objects.append(ext_obj(rect(obj.x, obj.y,
-                                obj.width, obj.height, self.in_map, quiet=True), type=obj.type, **obj.properties))
+                                self.objects.append(ext_obj(rect(obj.x,
+                                obj.y, obj.width, obj.height, self.in_map,
+                                quiet=True), type=obj.type,
+                                **obj.properties))
             self.edge_width = self.in_map.width
             self.edge_height = self.in_map.height
             self.edge_x, self.edge_y = 0, 0
@@ -533,6 +685,9 @@ if imported_tiled:
 
         def set_screen(self, screen):
             """Sets screen (pygame) on which will map be blited.
+
+            :param screen: screen on which will map be blitted
+            :type screen: pygame.Surface
             """
             self.screen = screen
             self.screen_w, self.screen_h = self.screen.get_size()
@@ -540,8 +695,11 @@ if imported_tiled:
             self.screen_h)
 
         def set_camera_pos(self, x, y, edge=True):
-            """Sets camera position (centre), if edge is True it won't be
-            outside the map.
+            """Sets camera position (centre).
+
+            :param int x: x position of centre
+            :param int y: y position of centre
+            :param bool edge: if ``True`` won't be outside the screen
             """
             self.x = x
             self.y = y
@@ -556,11 +714,13 @@ if imported_tiled:
 
         def get_camera_pos(self):
             """Returns camera position.
+
+            :returns: tuple with x and y position
             """
             return (self.x, self.y)
 
         def blit(self):
-            """Blits map (on seted screen).
+            """Blits map (on setted screen).
             """
             for layer in self.layers:
                 if not layer.is_object_group:
@@ -571,6 +731,11 @@ if imported_tiled:
                     obj.blit()
 
         def clone_obj(self, key, key_type="name"):
+            """Returns list of all objects with given name.
+
+            :param str key: name of searching object/s
+            :para str key_type: for now unimportant (might be in next version
+            """
             self.final = []
             for obj in self.objects:
                 if obj.name == key:
@@ -584,18 +749,32 @@ if imported_tiled:
 
         def set_edge(self, width, height):
             """Sets edge of map.
+
+            :param int width: width of new map
+            :param int height: height of new map
             """
             self.edge_width = width
             self.edge_height = height
 
         def offset(self, x, y):
             """Sets how off map is.
+
+            :param int x: starting x of map
+            :param int y: starting y of map
             """
             self.edge_x = x
             self.edge_y = y
 
     class map_obj:
         """Basic Map object.
+
+        :param int x: x position of object
+        :param int y: y position of object
+        :param Map: object map
+        :type Map: :py:class:`tiled_map`
+        :param picture: object picture (which will be blitted)
+        :type picture: pygame.Surface
+        :param str name: object name
         """
         blits = True
 
@@ -615,29 +794,42 @@ if imported_tiled:
             self.Map.screen.blit(self.picture, self.get_blit())
 
         def get_blit(self):
-            """Returns position on which picture would be blitted
+            """Returns position on which picture would be blitted.
             """
             return (self.x - self.Map.x + self.Map.screen_w / 2, self.y -
             self.Map.y + self.Map.screen_h / 2)
 
         def set_position(self, x, y):
             """Sets position of object.
+
+            :param int x: sets centre x position of map
+            :param int y: sets centre y position of map
             """
             self.x = x
             self.y = y
 
         def move(self, x, y):
-            """Moves objetct.
+            """Moves object.
+
+            :param int x: x move
+            :param int y: y move
             """
             self.x += x
             self.y += y
 
     class moving_map(tiled_map):
         """Map in which moving is very easy.
+
+        :param str name: file name
+        :param int x: initial x position
+        :param int y: initial y position
+        :param dict r_decoder: 'decodes' objects from map into given objects
+        :param dict a_decoder: same as r_decoder, but uses tiledtmxloader object as input
         """
 
-        def __init__(self, name, x, y, screen, edge=True, decoder={"p": point}):
-            super().__init__(name, decoder)
+        def __init__(self, name, x, y, screen, edge=True,
+            r_decoder={"p": point},  a_decoder={"P": point}):
+            super().__init__(name, r_decoder, a_decoder)
             self.set_screen(screen)
             self.X = x
             self.Y = y
@@ -645,19 +837,29 @@ if imported_tiled:
             self.set_camera_pos(self.X, self.Y, self.edge)
 
         def set_position(self, x, y):
-            """Sets position of map 'center object'.
+            """Sets position of map *centre object*.
+
+            :param int x: x position of *centre object*
+            :param int y: y position of *centre object*
             """
             self.X = x
             self.Y = y
             self.set_camera_pos(self.X, self.Y, self.edge)
 
         def get_position(self):
-            """Returns 'center object' position.
+            """Returns 'centre object' position.
+
+            :param int x: sets centre x position of map
+            :param int y: sets centre y position of map
             """
             return (self.X, self.Y)
 
         def move(self, x, y):
-            """Moves 'center object'.
+            """Moves 'centre object'.
+
+            :param int x: x move
+            :param int y: y move
+
             """
             self.X += x
             self.Y += y

@@ -5,12 +5,7 @@ Part of library for data saving.
 
 def data_bytes(data):
     """
-    Function that data(number, string...) converts to bytes:
-    0 - numbers(integers and floats),
-    1 - strings,
-    2 - floating point,
-    3 - lists begining,
-    4 - lists ending.*
+    Function that data(number, string...) converts to bytes.*
     """
     final = bytearray()
     if type(data) == str:
@@ -48,11 +43,14 @@ def data_bytes(data):
 
 
 class Knowledge:
-    """Class for all data in programm.
+    """Class for all data in program.
+
+    :param str filename: name of data file without extension
+    :param str ext: extension of data file
     """
-    def __init__(self, filename):
+    def __init__(self, filename, ext='.knw'):
         self.data = {}
-        self.filename = filename + '.knw'
+        self.filename = filename + ext
         self.save = bytearray()
 
     def __repr__(self):
@@ -83,7 +81,7 @@ class Knowledge:
 
 
 def bytes_data(binary):
-    """Function that bytes converts to data(numbers, strigns...).*
+    """Function that bytes converts to data(numbers, strings...).*
     """
     thing = None
     decimal = False
@@ -138,10 +136,15 @@ def bytes_data(binary):
                 ret = bytearray()
 
 
-def load(filename):
+def load(filename, ext='.knw'):
     """Function that loads saved data and returns Knowledge object.
+
+    :param str filename: name of data file without extension
+    :param str ext: extension of data file
+    :returns: data from file
+    :rtype: :py:class:`Knowledge`
     """
-    with open(filename + '.knw', 'rb') as infile:
+    with open(filename + ext, 'rb') as infile:
         a = bytearray(infile.read())
     res = Knowledge(filename)
     state = 'key'
