@@ -7,9 +7,7 @@ screen = pygame.display.set_mode((500, 500))
 
 Map = Orientation.tiled_map("first_level")
 
-Map.set_screen(screen)
-
-Map.set_camera_pos(200, 200)
+Map.set_camera_pos(300, 300)
 
 running = True
 while running:

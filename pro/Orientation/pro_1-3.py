@@ -5,7 +5,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((500, 500))
 
-Map = Orientation.moving_map("first_level", 500, 500, screen)
+Map = Orientation.moving_map("first_level", 300, 300)
 
 running = True
 while running:

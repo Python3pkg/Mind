@@ -6,7 +6,7 @@ pygame.init()
 pygame.display.set_caption("test, arrows for moving")
 screen = pygame.display.set_mode((400, 400))
 
-Map = Orientation.moving_map("first_level", 500, 500, screen)
+Map = Orientation.moving_map("first_level", 300, 300)
 Map.set_position(*Map.get_camera_pos())
 
 running = True

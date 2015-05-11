@@ -4,13 +4,13 @@ import pygame
 pygame.init()
 screen = pygame.display.set_mode((400, 400))
 pygame.display.set_caption('test, arrows for moving')
-Map = Orientation.moving_map('first_level', 200, 200, screen)
+Map = Orientation.moving_map('first_level', 200, 200)
 Map.set_edge(Map.edge_width - 10, Map.edge_height - 10)
 Map.offset(10, 10)
 Map.move(0, 0)
 font = pygame.font.SysFont(None, 50)
 a = font.render('A', 1, (255, 0, 0))
-p = Orientation.map_obj(*Map.get_position() + (Map, a))
+p = Orientation.map_obj("", "", {}, a, Map, Orientation.point(*Map.get_position() + (Map.in_map,)))
 running = True
 while running:
     for event in pygame.event.get():

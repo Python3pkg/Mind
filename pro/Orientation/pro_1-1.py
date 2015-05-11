@@ -7,8 +7,6 @@ screen = pygame.display.set_mode((500, 500))
 
 Map = Orientation.tiled_map("first_level")
 
-Map.set_screen(screen)
-
 running = True
 while running:
    for event in pygame.event.get():
