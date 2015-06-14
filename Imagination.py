@@ -2,15 +2,19 @@
 Part of library for Main Menu.
 """
 
+import sys
+
 import pygame
 
 ARROWS = [(pygame.K_UP, "up"), (pygame.K_DOWN, "down"), (pygame.K_LEFT,
-"left"), (pygame.K_RIGHT, "right")]
+  "left"), (pygame.K_RIGHT, "right")]
 """List of keys (arrows) for Menu changing index.
 """
 HIT = [(pygame.K_RETURN, "hit"), (pygame.K_SPACE, "hit")]
 """List of keys for Menu selecting option.
 """
+
+sys.__stdout__ = sys.stdout
 
 
 def useless(*useless_args):
@@ -62,7 +66,7 @@ def ch_text(new_text, error=True):
         else:
             if error:
                 raise TypeError(str(type(self)) +
-                " should be text_pusher!")
+                  " should be text_pusher!")
     return function
 
 
@@ -81,7 +85,7 @@ def ch_color(new_color, error=True):
         else:
             if error:
                 raise TypeError(str(type(self)) +
-                " should be text_pusher!")
+                  " should be text_pusher!")
     return function
 
 
@@ -100,7 +104,7 @@ def ch_font(new_font, error=True):
         else:
             if error:
                 raise TypeError(str(type(self)) +
-                " should be text_pusher!")
+                  " should be text_pusher!")
     return function
 
 
@@ -144,6 +148,20 @@ def joined(List):
         for f in List:
             f(self, obj)
     return function
+
+
+def set_printer(printer):
+    """Sets default printer for print.
+
+    :param printer: printer which will be default for print()
+    """
+    sys.stdout = printer
+
+
+def normalize_print():
+    """Normalize print().
+    """
+    sys.stout = sys.__stdout__
 
 
 def equal(image1, image2):
@@ -221,7 +239,8 @@ class Game:
     def define(self, **options):
         """Defines options parameters for all menues.
 
-        :param options: option parameters for all menues (see :py:class:`Main_menu` and :py:class:`option`)
+        :param options: option parameters for all menues (see
+          :py:class:`Main_menu` and :py:class:`option`)
         """
         self.options = options
         for menu in self.menues:
@@ -230,7 +249,8 @@ class Game:
     def declare(self, type=None, **options):
         """Defines menues parameters.
 
-        :param type: type of all menues in game (None for will be defined later).
+        :param type: type of all menues in game (None for will be defined
+          later).
         :type type: type
         :param options: menu parameters (see :py:class:`Main_menu`)
         """
@@ -238,10 +258,13 @@ class Game:
         self.Options = options
 
     def get_from(self, prior=False, **rest):
-        """Returns menu from game combining previously defined and rest arguments.
+        """Returns menu from game combining previously defined and rest
+          arguments.
 
-        :param bool prior: if ``True`` rest options are prefered otherwise previously defined are prefered.
-        :param rest: menu parameters which aren't defined by :py:meth:`Game.declare`
+        :param bool prior: if ``True`` rest options are prefered otherwise
+          previously defined are prefered.
+        :param rest: menu parameters which aren't defined by
+          :py:meth:`Game.declare`
         :returns: menu or any other type defined by *type* argument
         """
         self.opt = rest
@@ -258,10 +281,13 @@ class Game:
         return self.type(**self.opt)
 
     def set_from(self, prior=False, **rest):
-        """Like :py:meth:`get_from` but this function automatically sets menu for game menu.
+        """Like :py:meth:`get_from` but this function automatically sets
+          menu for game menu.
 
-        :param bool prior: if ``True`` rest options are prefered otherwise previously defined are prefered.
-        :param rest: menu parameters which aren't defined by :py:meth:`Game.declare`
+        :param bool prior: if ``True`` rest options are prefered otherwise
+          previously defined are prefered.
+        :param rest: menu parameters which aren't defined by
+          :py:meth:`Game.declare`
         :returns: menu or any other type defined by *type* argument
         """
         M = self.get_from(prior, **rest)
@@ -376,12 +402,14 @@ class Main_menu:
     :type options: :py:class:`option`
     :param off: how *off* menu is (on relation to the center of screen)
     :type off: tuple of two ints
-    :param str off_type: if 'pixel' *off* will be measured in pixels, if 'percent' (or '%') *off* will be measured in percent of screen
+    :param str off_type: if 'pixel' *off* will be measured in pixels, if
+      'percent' (or '%') *off* will be measured in percent of screen
     :param keyboard: keyboard which will be used in menu
     :type keyboard: :py:class:`Keyboard`
     """
-    def __init__(self, places, x_distance, y_distance, *options, off=(0, 0),  # lint:ok
-        off_type='pixel', keyboard=Keyboard(ARROWS + HIT)):
+    def __init__(self, places, x_distance, y_distance, *options,
+          off=(0, 0), off_type='pixel', start=(50, 50),
+          keyboard=Keyboard(ARROWS + HIT)):
         self.places = places
         if type(self.places) != list:
             self.places = [self.places]
@@ -391,21 +419,22 @@ class Main_menu:
         self.options = list(options)
         self.off = off
         self.off_type = off_type
+        self.start = start
         self.keyboard = keyboard
-        self.center = (self.screen.get_size()[0] / 2, self.screen.
-        get_size()[1] / 2)
+        self.center = (self.screen_w * self.start[0] / 100, self.screen_h *
+          self.start[1] / 100)
         if self.off_type == 'pixel':
             self.center = (self.center[0] + self.off[0], self.center[1] +
-            self.off[1])
+              self.off[1])
         if self.off_type in ('percent', '%'):
             self.center = (self.center[0] + self.screen_w * self.off[0] /
-            100, self.center[1] + self.screen_h * self.off[1] / 100)
+              100, self.center[1] + self.screen_h * self.off[1] / 100)
 
     def __repr__(self):
         fin = "Menu object:\n"
         fin += "at " + str(self.center) + "(center),\n"
-        fin += "with " + str(len(self.options)) + " option" + "s" * (not
-        len(self.options) == 1) + ",\n"
+        fin += "with " + str(len(self.options)) + " option" + "s" if\
+          len(self.options) > 1 else "" + ",\n"
         try:
             fin += "index at option " + str(self.index)
         except:
@@ -417,7 +446,8 @@ class Main_menu:
 
         :param option: option which will be added to menu
         :type option: :py:class:option
-        :param bool seted_option: if ``True`` menu index will be on that option
+        :param bool seted_option: if ``True`` menu index will be on that
+          option
         """
         self.options.append(option)
         if seted_option:
@@ -427,12 +457,12 @@ class Main_menu:
         """Should be executed on the end of options adding.
         """
         self.first_x = self.center[0] - (len(self.options) - 1) / 2 *\
-        self.distance[0]
+          self.distance[0]
         self.first_y = self.center[1] - (len(self.options) - 1) / 2 *\
-        self.distance[1]
+          self.distance[1]
         for pos, opt in enumerate(self.options):
-            opt.set_position(self.first_x + pos * self.distance[0], self.first_y + pos *
-            self.distance[1])
+            opt.set_position(self.first_x + pos * self.distance[0],
+              self.first_y + pos * self.distance[1])
             if opt == self.current:
                 self.index = pos
         self.current.bold()
@@ -449,10 +479,13 @@ class Main_menu:
         self.Options["menu"] = self
 
     def get_from(self, prior=False, **rest):
-        """Returns option from menu combining previously defined and rest arguments.
+        """Returns option from menu combining previously defined and rest
+          arguments.
 
-        :param bool prior: if ``True`` rest options are prefered otherwise previously defined are prefered.
-        :param rest: option parameters which aren't defined by :py:meth:`Main_menu.define`
+        :param bool prior: if ``True`` rest options are prefered otherwise
+          previously defined are prefered.
+        :param rest: option parameters which aren't defined by
+          :py:meth:`Main_menu.define`
         :returns: option or any other type defined by *type* argument
         """
         self.opt = rest
@@ -471,9 +504,12 @@ class Main_menu:
     def set_from(self, seted_option=False, prior=False, **rest):
         """Sets option to menu.
 
-        :param bool seted_option: if ``True`` menu index will be on that option
-        :param bool prior: if ``True`` rest options are prefered otherwise previously defined are prefered.
-        :param rest: option parameters which aren't defined by :py:meth:`Main_menu.define`
+        :param bool seted_option: if ``True`` menu index will be on that
+          option
+        :param bool prior: if ``True`` rest options are prefered otherwise
+          previously defined are prefered
+        :param rest: option parameters which aren't defined by
+          :py:meth:`Main_menu.define`
         """
         self.add_option(self.get_from(prior, **rest), seted_option)
 
@@ -525,8 +561,8 @@ class Main_menu:
             opt.proces = 2
 
 
-def Vertical_menu(places, distance, *options, off=(0, 0),  # lint:ok
-    off_type='pixel', keyboard=Keyboard(ARROWS + HIT)):
+def Vertical_menu(places, distance, *options, off=(0, 0),
+      off_type='pixel', keyboard=Keyboard(ARROWS + HIT), start=(50, 50)):
     """Returns menu which is vertical.
 
     :param places: place/es on which will menu be blitted
@@ -536,15 +572,17 @@ def Vertical_menu(places, distance, *options, off=(0, 0),  # lint:ok
     :type options: :py:class:`option`
     :param off: how *off* menu is (on relation to the center of screen)
     :type off: tuple of two ints
-    :param str off_type: if 'pixel' *off* will be measured in pixels, if 'percent' (or '%') *off* will be measured in percent of screen
+    :param str off_type: if 'pixel' *off* will be measured in pixels, if
+      'percent' (or '%') *off* will be measured in percent of screen
     :param keyboard: keyboard which will be used in menu
     :type keyboard: :py:class:`Keyboard`
     """
-    return Main_menu(places, 0, distance, *options, off=off, off_type=off_type, keyboard=keyboard)
+    return Main_menu(places, 0, distance, *options, off=off,
+      off_type=off_type, keyboard=keyboard, start=start)
 
 
-def Horizontal_menu(places, distance, *options, off=(0, 0),  # lint:ok
-    off_type='pixel', keyboard=Keyboard(ARROWS + HIT)):
+def Horizontal_menu(places, distance, *options, off=(0, 0),
+    off_type='pixel', keyboard=Keyboard(ARROWS + HIT), start=(50, 50)):
     """Returns menu which is horizontal.
 
     :param places: place/es on which will menu be blitted
@@ -554,11 +592,49 @@ def Horizontal_menu(places, distance, *options, off=(0, 0),  # lint:ok
     :type options: :py:class:`option`
     :param off: how *off* menu is (on relation to the center of screen)
     :type off: tuple of two ints
-    :param str off_type: if 'pixel' *off* will be measured in pixels, if 'percent' (or '%') *off* will be measured in percent of screen
+    :param str off_type: if 'pixel' *off* will be measured in pixels, if
+      'percent' (or '%') *off* will be measured in percent of screen
     :param keyboard: keyboard which will be used in menu
     :type keyboard: :py:class:`Keyboard`
     """
-    return Main_menu(places, distance, 0, *options, off=off, off_type=off_type, keyboard=keyboard)
+    return Main_menu(places, distance, 0, *options, off=off,
+      off_type=off_type, keyboard=keyboard, start=start)
+
+
+class printer:
+    """Basic printer (for print()) class.
+
+    :param int x: x of print place
+    :param int y: y of print place
+    :param font: text font
+    :type font: pygame.font.Font
+    :param int newl: space between lines
+    """
+    def __init__(self, x, y, font, newl, color=(0, 0, 0)):
+        self.x = x
+        self.y = y
+        self.screen = pygame.display.get_surface()
+        self.text = ""
+        self.newl = newl
+        self.font = font
+        self.color = color
+
+    def write(self, text):
+        """Writes text to priter.*
+        """
+        self.text += text
+
+    def clear(self):
+        """Clears text on printer
+        """
+        self.text = ""
+
+    def blit(self):
+        """Blits printer
+        """
+        for p, l in enumerate(self.text.splitlines()):
+            self.ren = self.font.render(l, True, self.color)
+            self.screen.blit(self.ren, (self.x, self.y + p * self.newl))
 
 
 class option:
@@ -590,7 +666,7 @@ class option:
         self.x1 = x - self.x2 / 2
         self.y1 = y - self.y2 / 2
         self.pusher = pusher(self.x1, self.y1, self.image, self.menu,
-        self.do, self.pos_do, self.anti_pos_do)
+          self.do, self.pos_do, self.anti_pos_do)
 
     def blit(self):
         """Blits option.*
@@ -617,7 +693,8 @@ class option:
 class pusher:
     """Bacis independed option class (mostly used in option class).*
     """
-    def __init__(self, x1, y1, image, obj, do=None, pos_do=None, anti_pos_do=None):
+    def __init__(self, x1, y1, image, obj, do=None, pos_do=None,
+          anti_pos_do=None):
         self.x1, self.y1 = self.sx, self.sy = x1, y1
         self.image = self.simage = image
         self.x2, self.y2 = self.image.get_size()
@@ -672,12 +749,12 @@ class text_option(option):
     :param function anti_pos_do: what happens when index to another option
     """
     def __init__(self, font, text, color, menu, do=useless, pos_do=useless,
-        anti_pos_do=useless):
+          anti_pos_do=useless):
         self.font = font
         self.text = text
         self.color = color
         super().__init__(self.font.render(self.text, True, self.color),
-        menu, do, pos_do, anti_pos_do)
+          menu, do, pos_do, anti_pos_do)
 
     def set_position(self, x, y):
         """Sets option's position.*
@@ -685,7 +762,7 @@ class text_option(option):
         self.center = (x, y)
         super().set_position(x, y)
         self.pusher = text_pusher(self.x1, self.y1, self.font, self.text,
-        self.color, self.menu, self.do, self.pos_do, self.anti_pos_do)
+          self.color, self.menu, self.do, self.pos_do, self.anti_pos_do)
 
     def blit(self):
         """Blits option.*
@@ -699,7 +776,7 @@ class text_option(option):
 
 class text_pusher(pusher):
     """Textual independed option class (mostly used in text_option class,
-    subclass of pusher).*
+      subclass of pusher).*
     """
     def __init__(self, x1, y1, font, text, color, obj, do,
         pos_do, anti_pos_do):
@@ -713,3 +790,20 @@ class text_pusher(pusher):
         """Updates pusher.*
         """
         self.image = self.font.render(self.text, True, self.color)
+
+
+class fake_txt_opt(text_option):
+    def __init__(self, font, text, color, menu, *args, **kwargs):
+        super().__init__(font, text, color, menu)
+
+    def bold(self):
+        if self.menu.keyboard["up"] == 1:
+            self.menu.index -= 1
+            self.menu.index %= len(self.menu.options)
+            self.menu.current = self.menu.options[self.menu.index]
+            self.menu.current.bold()
+        elif self.menu.keyboard["down"] == 1:
+            self.menu.index += 1
+            self.menu.index %= len(self.menu.options)
+            self.menu.current = self.menu.options[self.menu.index]
+            self.menu.current.bold()

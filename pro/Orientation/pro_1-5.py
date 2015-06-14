@@ -23,6 +23,7 @@ while running:
                Map.move(0, 10)
            if event.key == pygame.K_LEFT:
                Map.move(-10, 0)
+
    Map.set_position(*Map.get_camera_pos())
    screen.fill((255, 255, 255))
 
