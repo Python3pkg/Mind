@@ -107,7 +107,7 @@ class point:
         """Calculates distance between this and given point.
         """
         self.other = other
-        return math.sqrt(abs(self.x - other.x) ** 2 + abs(self.y - other.y)
+        return math.sqrt((self.x - other.x) ** 2 + (self.y - other.y)
           ** 2)
 
     def get_xy(self):

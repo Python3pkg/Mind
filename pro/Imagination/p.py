@@ -1,4 +1,5 @@
-from Mind import Imagination
+import random
+
 import pygame
 
 screen = pygame.display.set_mode((800, 500))
@@ -14,7 +15,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill((255, 255, 255))
+    screen.fill(color)
 
     pygame.display.flip()
 

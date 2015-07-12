@@ -1,4 +1,4 @@
-from Mind import Orientation, Existence
+from Mind import Orientation
 import pygame
 
 
