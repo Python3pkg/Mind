@@ -2,6 +2,7 @@ from xml.etree.ElementTree import ElementTree as Tree
 import base64 as b64
 import zlib
 import math
+from os import path
 
 import pygame
 
@@ -120,7 +121,7 @@ class line:
     """Basic line class.
     """
     def __init__(self, points, Map, description='Unknown', quiet=False,
-        from_line_seg=False):
+      from_line_seg=False):
         self.points = points
         if from_line_seg:
             self.segment = from_line_seg
@@ -128,12 +129,14 @@ class line:
             self.segment = line_seg(self.points, Map, quiet=True,
               from_line=self)
         self.Map = Map
-        self.description = description
+        self.name = self.description = description
         if not quiet:
             self.Map.add_obj(self)
-        self.dif = self.x_dif, self.y_dif = self.segment.dif
-        self.name = self.description
-        self.cof = self.segment.cof
+        self.dif = self.x_dif, self.y_dif = self.points[1].x -\
+          self.points[0].x, self.points[1].y - self.points[0].y
+        self.a = self.y_dif / self.x_dif
+        self.b = self.points[0].y - self.a * self.points[0].x
+        self.fnc = lambda x: self.a * x + self.b
 
     def __str__(self):
         return self.description + ' line (' + str(self.points[0]) + ', ' +\
@@ -144,11 +147,7 @@ class line:
     def __contains__(self, other):
         self.other = other
         if type(self.other) == point:
-            if self.other in self.points:
-                return True
-            self.l = line((self.points[0], self.other), Map, quiet=True)
-            if self.l.cof == self.cof:
-                return True
+            return self.fnc(self.other.x) == self.other.y
         elif type(self.other) == group_of_points:
             for P in self.other.points:
                 if not P in self:
@@ -191,23 +190,9 @@ class line:
         """Returns point of intersection of lines.
         """
         self.L = L
-        self.x1, self.y1 = self.points[0].get_xy()
-        self.x2, self.y2 = self.points[1].get_xy()
-        self.x3, self.y3 = self.L.points[0].get_xy()
-        self.x4, self.y4 = self.L.points[1].get_xy()
-        self.xs1 = self.x1 - self.x2
-        self.xs2 = self.x3 - self.x4
-        self.xs1 /= self.y1 - self.y2
-        self.xs2 /= self.y3 - self.y4
-        if self.xs1 == self.xs2:
-            raise RuntimeError("Lines are parallel")
-        self.x3 += (self.y1 - self.y3) * self.xs2
-        self.y3 = self.y1
-        self.diff1 = self.x1 - self.x3
-        self.diff2 = self.xs1 - self.xs2
-        self.X = self.x1 - self.diff1 * (self.xs1 / self.diff2)
-        return point(self.X, self.y1 + (self.X - self.x1) / (1 / self.cof),
-          self.Map, quiet=True)
+        x = -(self.b - self.L.b)/(self.a - self.L.a)
+        y = self.fnc(x)
+        return (x, y)
 
 
 class line_seg:
@@ -602,7 +587,7 @@ class element:
                 del self.props[prop]
 
     @classmethod
-    def __tmx_x_init__(cls, obj, Map):
+    def __tmx_init__(cls, obj, Map):
         name = ""
         if "name" in obj.attrib:
             name = obj.attrib["name"]
@@ -610,7 +595,7 @@ class element:
         if obj.find("properties"):
             for prop in obj.find("properties"):
                 properties[prop.attrib["name"]] = prop.attrib["value"]
-        if cls.__tmx_x_init__.__func__ == element.__tmx_x_init__.__func__:
+        if cls.__tmx_init__.__func__ == element.__tmx_init__.__func__:
             return cls(name, properties, Map)
         else:
             cls.name = name
@@ -625,19 +610,24 @@ class layer(element):
         self.mapping = mapping
         self.Map = Map
         self.screen = self.Map.screen
+        self.screen_w, self.screen_h = self.screen.get_size()
         self.tiles = self.Map.images
         self.tile_width, self.tile_height = self.Map.tile_size
         self.x = self.y = 0
+        self.d = {}
+        for t in self.tiles:
+            for x in range(t.size):
+                self.d[t.first + x] = (t, x)
 
     @classmethod
-    def __tmx_x_init__(cls, obj, Map):
-        super().__tmx_x_init__(obj, Map)
+    def __tmx_init__(cls, obj, Map):
+        super().__tmx_init__(obj, Map)
         BIN = zlib.decompress(b64.b64decode(obj.find("data").text[4:-3]))
         mapping = [[] for x in range(int(Map.t_height))]
         for p, x in enumerate(BIN):
             if not p % 4:
                 mapping[int(p/4/Map.t_width)].append(int(x))
-        if cls.__tmx_x_init__.__func__ == layer.__tmx_x_init__.__func__:
+        if cls.__tmx_init__.__func__ == layer.__tmx_init__.__func__:
             return cls(cls.name, cls.properties, mapping, Map)
         else:
             cls.mapping = mapping
@@ -648,19 +638,28 @@ class layer(element):
         self.x = x
         self.y = y
 
+    def get_tiles(self):
+        x_s = int(self.x / self.tile_width)
+        x_o = self.x % self.tile_width
+        x_e = int(x_s + self.screen_w / self.tile_width + bool(x_o))
+        y_s = int(self.y / self.tile_height)
+        y_o = self.y % self.tile_height
+        y_e = int(y_s + self.screen_h / self.tile_height + bool(y_o))
+        return (x_s, x_o, x_e, y_s, y_o, y_e)
+
     def blit(self):
         """Blits layer.*
         """
-        for p_y, y in enumerate(self.mapping):
-            for p_x, x in enumerate(y):
-                for tile in self.tiles:
-                    if tile.Index(x):
-                        tile.blit((p_x * self.tile_width - self.x, p_y *
-                          self.tile_height - self.y), x - tile.Index(x))
+        pos = self.get_tiles()
+        for p_y, y in enumerate(self.mapping[pos[3]:pos[5]]):
+            for p_x, x in enumerate(y[pos[0]:pos[2]]):
+                if x:
+                    self.d[x][0].blit((p_x * self.tile_width - pos[1], p_y *
+                      self.tile_height - pos[4]), self.d[x][1])
 
 
 class Object(element):
-    """Basic tilemap object class.
+    """Basic tilemap object class.*
     """
     def __init__(self, name, Type, props, Map, obj):
         super().__init__(name, props, Map)
@@ -670,8 +669,8 @@ class Object(element):
         self.Map.in_map.add_obj(self)
 
     @classmethod
-    def __tmx_x_init__(cls, obj, Map):
-        super().__tmx_x_init__(obj, Map)
+    def __tmx_init__(cls, obj, Map):
+        super().__tmx_init__(obj, Map)
         Type = ""
         x = int(obj.attrib["x"])
         y = int(obj.attrib["y"])
@@ -689,7 +688,7 @@ class Object(element):
               Map.in_map, cls.name, True)
         else:
             Obj = rect(x, y, width, height, Map.in_map, cls.name, True)
-        if cls.__tmx_x_init__.__func__ == Object.__tmx_x_init__.__func__:
+        if cls.__tmx_init__.__func__ == Object.__tmx_init__.__func__:
             return cls(cls.name, Type, cls.properties, Map, Obj)
         else:
             cls.type = Type
@@ -729,16 +728,17 @@ class map_obj(Object):
         self.x, self.y = self.obj.get_xy()
 
     @classmethod
-    def __tmx_x_init__(cls, obj, Map):
-        super().__tmx_x_init__(obj, Map)
-        if cls.__tmx_x_init__.__func__ == map_obj.__tmx_x_init__.__func__:
+    def __tmx_init__(cls, obj, Map):
+        super().__tmx_init__(obj, Map)
+        if cls.__tmx_init__.__func__ == map_obj.__tmx_init__.__func__:
             return cls(cls.name, cls.type, cls.properties, None, Map,
               cls.obj)
 
     def blit(self):
         """Blits object.*
         """
-        self.Map.screen.blit(self.picture, self.get_blit())
+        if self.picture:
+            self.Map.screen.blit(self.picture, self.get_blit())
 
     def get_blit(self):
         """Returns where object should be blitted.*
@@ -790,18 +790,18 @@ class objectgroup(element):
             yield o
 
     @classmethod
-    def __tmx_x_init__(cls, obj, Map):
-        super().__tmx_x_init__(obj, Map)
+    def __tmx_init__(cls, obj, Map):
+        super().__tmx_init__(obj, Map)
         objects = []
         for P in obj:
             if P.tag == "object":
                 if "type" in P.attrib and P.attrib["type"] in\
                   Map.decode[2]:
                     objects.append(Map.decode[2][P.attrib["type"]].\
-                      __tmx_x_init__(P, Map))
+                      __tmx_init__(P, Map))
                 else:
-                    objects.append(Map.default[2].__tmx_x_init__(P, Map))
-        if cls.__tmx_x_init__.__func__ == objectgroup.__tmx_x_init__.__func__:
+                    objects.append(Map.default[2].__tmx_init__(P, Map))
+        if cls.__tmx_init__.__func__ == objectgroup.__tmx_init__.__func__:
             return cls(cls.name, cls.properties, objects, Map)
         else:
             cls.objects = objects
@@ -818,7 +818,8 @@ class image:
     """Basic tileset class.*
     """
     def __init__(self, name, tile_x, tile_y, first, screen):
-        self.image = pygame.image.load(name)
+        self.name = name
+        self.image = pygame.image.load(name).convert()
         self.tile_size = self.tile_x, self.tile_y = (tile_x, tile_y)
         self.images = []
         self.size = self.x, self.y = self.image.get_size()
@@ -835,7 +836,7 @@ class image:
     def Index(self, index):
         """Returns firstindex if index is in tileset else 0.*
         """
-        return (self.first <= index <= self.first + self.size) * self.first
+        return (self.first <= index < self.first + self.size) * self.first
 
     def blit(self, pos, index):
         """Blits image on index at position pos.*
@@ -843,86 +844,67 @@ class image:
         self.screen.blit(self.image, pos, self.images[index])
 
 
-class tiled_map:
-    """Basic class for map in Tiled.
-    
-    :param str name: file name
+class visual_map:
+    """Basic class for game map.
+
+    :param int x: width of map
+    :param int y: height of map
+    :param bool layers: does map have layers
+    :param str path: path to all map images
     :param decode: decoding; first dict is for layers, second for\
     objectgroup and third for object
     :type decode: list of dicts
+    :param tuple tilesize: size of each tile (needed only if *layers* are used)
+    :param dict images: dictionary containing images paths and their nickname (used in ``write_on``)
     :param list else_: default decoding; first for layer, second for\
     objectgroup, third for object
     :param bool gid_point: if ``True`` object's obj will be point if rect\
     doesn't have width **and** height
     :param bool gid_line: if ``True`` object's obj will be line if rect\
     doesn't have width **or** height
+    :param bool size_in_tiles: is ``x`` and ``y`` measured in tiles
     """
-    def __init__(self, name, decode=[{}, {}, {}], else_=[layer,
-          objectgroup, Object], gid_point=True, gid_line=True):
-        self.name = name + '.tmx'
-        self.xml = Tree(file=self.name)
-        self.out_map = self.xml.getroot()
-
+    def __init__(self, x, y, layers=True, path="", decode=[{}, {}, {}],
+          tilesize=(), images={}, else_=[layer, objectgroup, Object],
+          gid_point=True, gid_line=True, size_in_tiles=False):
+        self.path = path
+        
         self.screen = pygame.display.get_surface()
         if self.screen:
             self.screen_w, self.screen_h = self.screen.get_size()
-        
-        self.tiles = self.t_width, self.t_height =\
-          int(self.out_map.attrib["width"]),\
-          int(self.out_map.attrib["height"])
-        self.tile_size = self.tile_width, self.tile_height\
-          = int(self.out_map.attrib["tilewidth"]),\
-          int(self.out_map.attrib["tileheight"])
-        self.size = self.width, self.height = self.t_width *\
-          self.tile_width, self.t_height * self.tile_height
+
+        self.size = self.width, self.height = self.edge_width, self.edge_height = x, y
+
+        self.x = self.y = self.edge_x = self.edge_y = 0
 
         self.decode = decode
         self.default = else_
-        self.images = []
-        self.layers = []
-        self.edge_x = self.edge_y = 0
-        self.edge_width, self.edge_height = self.size
-        self.x = self.y = 0
-        
+
+        self.layers = layers
+        if self.layers:
+            if not tilesize:
+                raise ValueError("If layers are ON, tilesize should be defined")
+            self.images = []
+            self.layers = []
+            self.translate = {None: 0}
+            self.tile_size = self.tile_width, self.tile_height = tilesize
+            if size_in_tiles:
+                self.tiles = self.t_width, self.t_height = self.width, self.height
+                self.width *= self.tile_width
+                self.height *= self.tile_height
+                self.size = self.edge_width, self.edge_height = self.width, self.height
+            else:
+                self.tiles = self.t_width, self.t_height = self.width //\
+                  self.tile_width, self.height // self.tile_height
+            self.next_id = 1
+            for im, nm in images.items():
+                self.create_tileset(im, nm)
+
         self.objects = []
-        self.gid_point = gid_point
-        self.gid_line = gid_line
         self.objectgroups = []
         self.in_map = MAP(self.width, self.height)
-
-        for part in self.out_map:
-            if part.tag == "tileset":
-                self.im = part.find("image")
-                self.images.append(image(self.im.attrib["source"],
-                  int(part.attrib["tilewidth"]),
-                  int(part.attrib["tileheight"]),
-                  int(part.attrib["firstgid"]), self.screen))
-            elif part.tag == "layer":
-                if part.attrib["name"] in self.decode[0]:
-                    self.layers.append(self.decode[0][part.attrib["type"]].
-                      __tmx_x_init__(part, self))
-                else:
-                    self.layers.append(self.default[0].__tmx_x_init__(part,
-                      self))
-            elif part.tag == "objectgroup":
-                if part.attrib["name"] in self.decode[1]:
-                    self.objectgroups.append(self.decode[1][part.attrib
-                      ["name"]].__tmx_x_init__(part, self))
-                else:
-                    self.objectgroups.append(self.default[1].\
-                      __tmx_x_init__(part, self))
-
-    def __str__(self):
-        return "Tiled m" + str(self.in_map)[1:]
-
-    __repr__ = __str__
-
-    def reset_screen(self):
-        """Resets map's screen (should be executed if screen wasn't\
-        defined before)
-        """
-        self.screen = pygame.display.get()
-        self.screen_w, self.screen_h = self.screen.get_size()
+        self.gid_point = gid_point
+        self.gid_line = gid_line
 
     def set_camera_pos(self, x, y, pos=(50, 50), edge=True):
         """Sets camera position.
@@ -932,40 +914,137 @@ class tiled_map:
         :param tuple pos: point of screen in percentage
         :param bool edge: if ``True`` won't be outside the screen
         """
-        self.x = x
-        self.y = y
-        self.off_x, self.off_y = self.screen_w * pos[0] / 100,\
-          self.screen_h * pos[1] / 100
-        self.x -= self.off_x
-        self.y -= self.off_y
+        self.x = x - self.screen_w * pos[0] / 100
+        self.y = y - self.screen_h * pos[1] / 100
         self.edge = edge
         if self.edge:
             self.x = max(self.edge_x, min(self.x, self.edge_width -
               self.screen_w))
             self.y = max(self.edge_y, min(self.y, self.edge_height -
               self.screen_h))
-        for l in self.layers:
-            l.set_pos(self.x, self.y)
+        if self.layers:
+            for l in self.layers:
+                l.set_pos(self.x, self.y)
 
-    def get_camera_pos(self):
-        """Returns map position.
-        
-        :returns: map position
-        :rtype: tuple
+    def get_camera_pos(self, pos=(50, 50)):
+        """Gets camera position.
+
+        :param tuple pos: point of screen in percentage 
         """
-        return (self.x + self.off_x, self.y + self.off_y)
+        return (self.x + self.screen_w * pos[0] / 100,
+          self.y + self.screen_h * pos[1] / 100)
 
     def blit(self):
-        """Blits tilemap and it's all objects to the screen
+        """Blits map and it’s all objects to the screen.
         """
+        if self.layers:
+            for l in self.layers:
+                l.blit()
+        for g in self.objectgroups:
+            g.blit()
+
+    def create_objectgroup(self, name, props={}, objects=[], **rest):
+        """Creates map's objectgroup.
+
+        :param str name: objectgroup name
+        :param dict props: properties of objectgroup
+        :param list objects: objects that belong to objectgroup
+        :param rest: other objectgroup parameters
+        """
+        if name in self.decode[1]:
+            obj = self.decode[1][name]
+        else:
+            obj = self.default[1]
+        self.objectgroups.append(obj(name, props, objects, Map=self, **rest))
+
+    def load_objectgroup(self, xml_obj):
+        """Loads objectgroup from xml element.*
+
+        :param xml_obj: element from which objectgroup is loaded
+        """
+        if xml_obj.attrib["name"] in self.decode[1]:
+            obj = self.decode[1][xml_obj.attrib["name"]]
+        else:
+            obj = self.default[1]
+        self.objectgroups.append(obj.__tmx_init__(xml_obj, self))
+
+    def assign_object(self, objgroup, obj):
+        """Assigns object to particular objectgroup.*
+
+        :param str objgroup: name of the objectgroup
+        :param obj: object which will be assigned
+        """
+        for gr in self.objectgroups:
+            if gr.name == objgroup:
+                gr.objects.append(obj)
+                break
+
+    def create_object(self, objgroup, name, Type, props={}, obj=None, **rest):
+        """Creates map object and assigns it to particular objectgroup.
+        """
+        if Type in self.decode[2]:
+            o = self.decode[2][Type](name, Type, props, obj, **rest)
+        else:
+            o = self.default[2][Type](name, Type, props, obj, **rest)
+        self.assign_object(objgroup, o)
+        return o
+
+    def create_layer(self, name, props={}, **rest):
+        """Creates map layer
+
+        :param str name: layer name
+        :param dict props: layer properties
+        :param rest: other layer parameters
+        """
+        if name in self.decode[0]:
+            obj = self.decode[0][name]
+        else:
+            obj = self.default[0]      
+        self.layers.append(obj(name, props, [[0 for x in
+          range(self.t_width)] for y in range(self.t_height)], self, **rest))
+        self.layers[-1].set_pos(self.x, self.y)
+
+    def load_layer(self, xml_obj):
+        """Loads objectgroup from xml element.*
+
+        :param xml_obj: element from which layer is loaded
+        """
+        if xml_obj.attrib["name"] in self.decode[0]:
+            obj = self.decode[0][xml_obj.attrib["name"]]
+        else:
+            obj = self.default[0]
+        self.layers.append(obj.__tmx_init__(xml_obj, self))
+
+    def create_tileset(self, img, name):
+        """Creates map tileset.
+
+        :param str img: path to tileset image
+        :param str name: tileset name
+        """
+        self.images.append(image(path.join(self.path, img),
+          self.tile_width, self.tile_height, self.next_id, self.screen))
+        self.translate[self.next_id] = name
+        self.next_id += self.images[-1].size
+
+    def write_on(self, pos, layer, num, pic=None, mul_pos=False):
+        """Changes map layer.
+        """
+        if not self.layers:
+            raise NotImplementedError("Can't use write_on when layers are off!")
+        n = num + self.translate[pic]
         for l in self.layers:
-            l.blit()
-        for o in self.objectgroups:
-            o.blit()
+            if l.name == layer:
+                L = l
+                break
+        if mul_pos:
+            for p in pos:
+                L.mapping[p[1]][p[0]] = n
+        else:
+            L.mapping[pos[1]][pos[0]] = n
 
     def clone_obj(self, key, key_type="name"):
         """Returns list of all objects with given parameter.
-        
+
         :param str key: parameter of searching object/s
         :param str key_type: name, group or type; what key means.
         """
@@ -1003,6 +1082,54 @@ class tiled_map:
         """
         self.edge_x = x
         self.edge_y = y
+
+
+class tiled_map(visual_map):
+    """Basic class for map in Tiled.
+    
+    :param str name: file name
+    :param decode: decoding; first dict is for layers, second for\
+    objectgroup and third for object
+    :type decode: list of dicts
+    :param list else_: default decoding; first for layer, second for\
+    objectgroup, third for object
+    :param bool gid_point: if ``True`` object's obj will be point if rect\
+    doesn't have width **and** height
+    :param bool gid_line: if ``True`` object's obj will be line if rect\
+    doesn't have width **or** height
+    """
+    def __init__(self, name, decode=[{}, {}, {}], else_=[layer,
+          objectgroup, Object], gid_point=True, gid_line=True):
+        self.name = name + '.tmx'
+        self.xml = Tree(file=self.name)
+        self.out_map = self.xml.getroot()
+        super().__init__(int(self.out_map.attrib["width"]),
+          int(self.out_map.attrib["height"]), True, path.dirname(self.name),
+          decode, (int(self.out_map.attrib["tilewidth"]),
+          int(self.out_map.attrib["tileheight"])), {}, else_, gid_point,
+          gid_line, True)
+
+        for part in self.out_map:
+            if part.tag == "tileset":
+                self.create_tileset(part.find("image").attrib["source"],
+                  part.attrib["name"])
+            elif part.tag == "layer":
+                self.load_layer(part)
+            elif part.tag == "objectgroup":
+                self.load_objectgroup(part)
+
+    def __str__(self):
+        return "Tiled m" + str(self.in_map)[1:]
+
+    __repr__ = __str__
+
+    def reset_screen(self):
+        """Resets map's screen (should be executed if screen wasn't\
+        defined before)
+        """
+        self.screen = pygame.display.get()
+        self.screen_w, self.screen_h = self.screen.get_size()
+
 
 
 class moving_map(tiled_map):

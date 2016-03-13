@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Mind.Orientation &mdash; Mind 0.3 documentation</title>
+    <title>Mind.Orientation &mdash; Mind 0.3.2 documentation</title>
     
     <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3',
+        VERSION:     '0.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Mind 0.3 documentation" href="index.html" />
+    <link rel="top" title="Mind 0.3.2 documentation" href="index.html" />
     <link rel="next" title="Mind.Imagination" href="Imagination.html" />
     <link rel="prev" title="Mind.Knowledge" href="Knowledge.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="Knowledge.html" title="Mind.Knowledge"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -286,7 +286,7 @@
 <dl class="class">
 <dt id="Mind.Orientation.Object">
 <em class="property">class </em><code class="descclassname">Mind.Orientation.</code><code class="descname">Object</code><span class="sig-paren">(</span><em>name</em>, <em>Type</em>, <em>props</em>, <em>Map</em>, <em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#Object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.Object" title="Permalink to this definition">¶</a></dt>
-<dd><p>Basic tilemap object class.</p>
+<dd><p>Basic tilemap object class.*</p>
 </dd></dl>
 
 <dl class="class">
@@ -368,6 +368,242 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="Mind.Orientation.visual_map">
+<em class="property">class </em><code class="descclassname">Mind.Orientation.</code><code class="descname">visual_map</code><span class="sig-paren">(</span><em>x, y, layers=True, path='', decode=[{}, {}, {}], tilesize=(), images={}, else_=[&lt;class 'Mind.Orientation.layer'&gt;, &lt;class 'Mind.Orientation.objectgroup'&gt;, &lt;class 'Mind.Orientation.Object'&gt;], gid_point=True, gid_line=True, size_in_tiles=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic class for game map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>int</em>) &#8211; width of map</li>
+<li><strong>y</strong> (<em>int</em>) &#8211; height of map</li>
+<li><strong>layers</strong> (<em>bool</em>) &#8211; does map have layers</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; path to all map images</li>
+<li><strong>decode</strong> (<em>list of dicts</em>) &#8211; decoding; first dict is for layers, second for    objectgroup and third for object</li>
+<li><strong>tilesize</strong> (<em>tuple</em>) &#8211; size of each tile (needed only if <em>layers</em> are used)</li>
+<li><strong>images</strong> (<em>dict</em>) &#8211; dictionary containing images paths and their nickname (used in <code class="docutils literal"><span class="pre">write_on</span></code>)</li>
+<li><strong>else</strong> (<em>list</em>) &#8211; default decoding; first for layer, second for    objectgroup, third for object</li>
+<li><strong>gid_point</strong> (<em>bool</em>) &#8211; if <code class="docutils literal"><span class="pre">True</span></code> object&#8217;s obj will be point if rect    doesn&#8217;t have width <strong>and</strong> height</li>
+<li><strong>gid_line</strong> (<em>bool</em>) &#8211; if <code class="docutils literal"><span class="pre">True</span></code> object&#8217;s obj will be line if rect    doesn&#8217;t have width <strong>or</strong> height</li>
+<li><strong>size_in_tiles</strong> (<em>bool</em>) &#8211; is <code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> measured in tiles</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.set_camera_pos">
+<code class="descname">set_camera_pos</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>pos=(50</em>, <em>50)</em>, <em>edge=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.set_camera_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.set_camera_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets camera position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>int</em>) &#8211; x position of point</li>
+<li><strong>y</strong> (<em>int</em>) &#8211; y position of point</li>
+<li><strong>pos</strong> (<em>tuple</em>) &#8211; point of screen in percentage</li>
+<li><strong>edge</strong> (<em>bool</em>) &#8211; if <code class="docutils literal"><span class="pre">True</span></code> won&#8217;t be outside the screen</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.get_camera_pos">
+<code class="descname">get_camera_pos</code><span class="sig-paren">(</span><em>pos=(50</em>, <em>50)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.get_camera_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.get_camera_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets camera position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> (<em>tuple</em>) &#8211; point of screen in percentage</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.blit">
+<code class="descname">blit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.blit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.blit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blits map and it’s all objects to the screen.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.create_objectgroup">
+<code class="descname">create_objectgroup</code><span class="sig-paren">(</span><em>name</em>, <em>props={}</em>, <em>objects=[]</em>, <em>**rest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.create_objectgroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.create_objectgroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates map&#8217;s objectgroup.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) &#8211; objectgroup name</li>
+<li><strong>props</strong> (<em>dict</em>) &#8211; properties of objectgroup</li>
+<li><strong>objects</strong> (<em>list</em>) &#8211; objects that belong to objectgroup</li>
+<li><strong>rest</strong> &#8211; other objectgroup parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.load_objectgroup">
+<code class="descname">load_objectgroup</code><span class="sig-paren">(</span><em>xml_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.load_objectgroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.load_objectgroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads objectgroup from xml element.*</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xml_obj</strong> &#8211; element from which objectgroup is loaded</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.assign_object">
+<code class="descname">assign_object</code><span class="sig-paren">(</span><em>objgroup</em>, <em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.assign_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.assign_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns object to particular objectgroup.*</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>objgroup</strong> (<em>str</em>) &#8211; name of the objectgroup</li>
+<li><strong>obj</strong> &#8211; object which will be assigned</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.create_object">
+<code class="descname">create_object</code><span class="sig-paren">(</span><em>objgroup</em>, <em>name</em>, <em>Type</em>, <em>props={}</em>, <em>obj=None</em>, <em>**rest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.create_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.create_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates map object and assigns it to particular objectgroup.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.create_layer">
+<code class="descname">create_layer</code><span class="sig-paren">(</span><em>name</em>, <em>props={}</em>, <em>**rest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.create_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.create_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates map layer</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) &#8211; layer name</li>
+<li><strong>props</strong> (<em>dict</em>) &#8211; layer properties</li>
+<li><strong>rest</strong> &#8211; other layer parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.load_layer">
+<code class="descname">load_layer</code><span class="sig-paren">(</span><em>xml_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.load_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.load_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads objectgroup from xml element.*</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>xml_obj</strong> &#8211; element from which layer is loaded</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.create_tileset">
+<code class="descname">create_tileset</code><span class="sig-paren">(</span><em>img</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.create_tileset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.create_tileset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates map tileset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>img</strong> (<em>str</em>) &#8211; path to tileset image</li>
+<li><strong>name</strong> (<em>str</em>) &#8211; tileset name</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.write_on">
+<code class="descname">write_on</code><span class="sig-paren">(</span><em>pos</em>, <em>layer</em>, <em>num</em>, <em>pic=None</em>, <em>mul_pos=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.write_on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.write_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes map layer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.clone_obj">
+<code class="descname">clone_obj</code><span class="sig-paren">(</span><em>key</em>, <em>key_type='name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.clone_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.clone_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all objects with given parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> (<em>str</em>) &#8211; parameter of searching object/s</li>
+<li><strong>key_type</strong> (<em>str</em>) &#8211; name, group or type; what key means.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.set_edge">
+<code class="descname">set_edge</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.set_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.set_edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets map edge.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>width</strong> (<em>int</em>) &#8211; new map width</li>
+<li><strong>height</strong> (<em>int</em>) &#8211; new map height</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Orientation.visual_map.offset">
+<code class="descname">offset</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#visual_map.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.visual_map.offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets map offset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>int</em>) &#8211; starting x of map</li>
+<li><strong>y</strong> (<em>int</em>) &#8211; starting y of map</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="Mind.Orientation.tiled_map">
 <em class="property">class </em><code class="descclassname">Mind.Orientation.</code><code class="descname">tiled_map</code><span class="sig-paren">(</span><em>name, decode=[{}, {}, {}], else_=[&lt;class 'Mind.Orientation.layer'&gt;, &lt;class 'Mind.Orientation.objectgroup'&gt;, &lt;class 'Mind.Orientation.Object'&gt;], gid_point=True, gid_line=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#tiled_map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.tiled_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic class for map in Tiled.</p>
@@ -390,102 +626,6 @@
 <dt id="Mind.Orientation.tiled_map.reset_screen">
 <code class="descname">reset_screen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#tiled_map.reset_screen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.tiled_map.reset_screen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets map&#8217;s screen (should be executed if screen wasn&#8217;t        defined before)</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="Mind.Orientation.tiled_map.set_camera_pos">
-<code class="descname">set_camera_pos</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>pos=(50</em>, <em>50)</em>, <em>edge=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#tiled_map.set_camera_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.tiled_map.set_camera_pos" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets camera position.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> (<em>int</em>) &#8211; x position of point</li>
-<li><strong>y</strong> (<em>int</em>) &#8211; y position of point</li>
-<li><strong>pos</strong> (<em>tuple</em>) &#8211; point of screen in percentage</li>
-<li><strong>edge</strong> (<em>bool</em>) &#8211; if <code class="docutils literal"><span class="pre">True</span></code> won&#8217;t be outside the screen</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="Mind.Orientation.tiled_map.get_camera_pos">
-<code class="descname">get_camera_pos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#tiled_map.get_camera_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.tiled_map.get_camera_pos" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns map position.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">map position</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="Mind.Orientation.tiled_map.blit">
-<code class="descname">blit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#tiled_map.blit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.tiled_map.blit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Blits tilemap and it&#8217;s all objects to the screen</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="Mind.Orientation.tiled_map.clone_obj">
-<code class="descname">clone_obj</code><span class="sig-paren">(</span><em>key</em>, <em>key_type='name'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#tiled_map.clone_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.tiled_map.clone_obj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns list of all objects with given parameter.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> (<em>str</em>) &#8211; parameter of searching object/s</li>
-<li><strong>key_type</strong> (<em>str</em>) &#8211; name, group or type; what key means.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="Mind.Orientation.tiled_map.set_edge">
-<code class="descname">set_edge</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#tiled_map.set_edge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.tiled_map.set_edge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets map edge.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>width</strong> (<em>int</em>) &#8211; new map width</li>
-<li><strong>height</strong> (<em>int</em>) &#8211; new map height</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="Mind.Orientation.tiled_map.offset">
-<code class="descname">offset</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Orientation.html#tiled_map.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Orientation.tiled_map.offset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets map offset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>x</strong> (<em>int</em>) &#8211; starting x of map</li>
-<li><strong>y</strong> (<em>int</em>) &#8211; starting y of map</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </dd></dl>
@@ -569,10 +709,6 @@
 
 </dd></dl>
 
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last"><code class="docutils literal"><span class="pre">tiled_map</span></code> and classes after will be initialized only if <code class="docutils literal"><span class="pre">tiledtmxloader</span></code> can be initialized!</p>
-</div>
 </div>
 
 
@@ -626,11 +762,11 @@
         <li class="right" >
           <a href="Knowledge.html" title="Mind.Knowledge"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Jakov Manjkas.
+        &copy; Copyright 2014-2016, Jakov Manjkas.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>

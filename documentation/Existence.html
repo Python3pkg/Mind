@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Mind.Existence &mdash; Mind 0.3 documentation</title>
+    <title>Mind.Existence &mdash; Mind 0.3.2 documentation</title>
     
     <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3',
+        VERSION:     '0.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Mind 0.3 documentation" href="index.html" />
-    <link rel="next" title="Mind 0.3 Tutorial" href="Tutorial.html" />
+    <link rel="top" title="Mind 0.3.2 documentation" href="index.html" />
+    <link rel="next" title="Mind 0.3.2 Tutorial" href="Tutorial.html" />
     <link rel="prev" title="Mind.Imagination" href="Imagination.html" /> 
   </head>
   <body role="document">
@@ -38,12 +38,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="Tutorial.html" title="Mind 0.3 Tutorial"
+          <a href="Tutorial.html" title="Mind 0.3.2 Tutorial"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Imagination.html" title="Mind.Imagination"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -144,6 +144,7 @@
 <li><strong>height</strong> (<em>int</em>) &#8211; height for all objects</li>
 <li><strong>name</strong> (<em>str</em>) &#8211; type name for all objects</li>
 <li><strong>props</strong> (<em>dict</em>) &#8211; properties for all objects</li>
+<li><strong>logic</strong> (None or instance of <a class="reference internal" href="#Mind.Existence.Logic" title="Mind.Existence.Logic"><code class="xref py py-class docutils literal"><span class="pre">Logic</span></code></a>) &#8211; type&#8217;s logic</li>
 </ul>
 </td>
 </tr>
@@ -153,7 +154,7 @@
 
 <dl class="class">
 <dt id="Mind.Existence.Logic">
-<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">Logic</code><span class="sig-paren">(</span><em>lf</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Existence.html#Logic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.Logic" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">Logic</code><span class="sig-paren">(</span><em>lf</em>, <em>lc=[]</em>, <em>doc=''</em>, <em>name=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Existence.html#Logic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.Logic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic logic class for move type.*</p>
 </dd></dl>
 
@@ -193,6 +194,108 @@
 
 </dd></dl>
 
+<dl class="class">
+<dt id="Mind.Existence.logic_obj">
+<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">logic_obj</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Existence.html#logic_obj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.logic_obj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logic object.*</p>
+<dl class="method">
+<dt id="Mind.Existence.logic_obj.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Existence.html#logic_obj.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.logic_obj.bind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binds logic object with type&#8217;s object.*</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Existence.logic_object">
+<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">logic_object</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Existence.html#logic_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.logic_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator for logic object class.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Existence.Subject">
+<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">Subject</code><a class="reference internal" href="_modules/Mind/Existence.html#Subject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.Subject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subject logic for <code class="docutils literal"><span class="pre">move_type</span></code> logic.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Existence.opt_size">
+<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">opt_size</code><a class="reference internal" href="_modules/Mind/Existence.html#opt_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.opt_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes size of object. Size will be picture size.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Existence.gravity">
+<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">gravity</code><a class="reference internal" href="_modules/Mind/Existence.html#gravity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic gravity object logic class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>g</strong> (<em>float</em>) &#8211; pixels of acceleration</li>
+<li><strong>jf</strong> (<em>float</em>) &#8211; jump force</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="Mind.Existence.gravity.cls">
+<code class="descname">cls</code><a class="headerlink" href="#Mind.Existence.gravity.cls" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#Mind.Existence.gravity" title="Mind.Existence.gravity"><code class="xref py py-class docutils literal"><span class="pre">gravity</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Existence.collider">
+<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">collider</code><a class="reference internal" href="_modules/Mind/Existence.html#collider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.collider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic collision object logic class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>funcs</strong> (<em>list of function or None</em>) &#8211; list functions to execute (1st for player&#8217;s left, 2nd    for player&#8217;s down ... 5th for any collision)</li>
+<li><strong>cl_types</strong> (<em>str</em>) &#8211; names of colliding types</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="Mind.Existence.collider.cls">
+<code class="descname">cls</code><a class="headerlink" href="#Mind.Existence.collider.cls" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#Mind.Existence.collider" title="Mind.Existence.collider"><code class="xref py py-class docutils literal"><span class="pre">collider</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Existence.collider2">
+<em class="property">class </em><code class="descclassname">Mind.Existence.</code><code class="descname">collider2</code><a class="reference internal" href="_modules/Mind/Existence.html#collider2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Existence.collider2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic collision object logic class (simmilar to collider).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cl_types</strong> (<em>str</em>) &#8211; names of colliding types</li>
+<li><strong>attr</strong> (<em>str</em>) &#8211; name of attribute in which are collide functions</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="Mind.Existence.collider2.cls">
+<code class="descname">cls</code><a class="headerlink" href="#Mind.Existence.collider2.cls" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#Mind.Existence.collider2" title="Mind.Existence.collider2"><code class="xref py py-class docutils literal"><span class="pre">collider2</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -206,7 +309,7 @@
                         title="previous chapter">Mind.Imagination</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="Tutorial.html"
-                        title="next chapter">Mind 0.3 Tutorial</a></p>
+                        title="next chapter">Mind 0.3.2 Tutorial</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -241,16 +344,16 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="Tutorial.html" title="Mind 0.3 Tutorial"
+          <a href="Tutorial.html" title="Mind 0.3.2 Tutorial"
              >next</a> |</li>
         <li class="right" >
           <a href="Imagination.html" title="Mind.Imagination"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Jakov Manjkas.
+        &copy; Copyright 2014-2016, Jakov Manjkas.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>

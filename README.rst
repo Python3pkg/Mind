@@ -1,10 +1,11 @@
 Mind
 =====
-Mind is divided on three parts (for now): Mind.Knowledge, Mind.Orientation, Mind.Imagination and Mind.Existence (and Mind.Test but it's only for testing).
-Next version will be 0.3.1
+Mind is divided on four parts (for now): Mind.Knowledge, Mind.Orientation, Mind.Imagination and Mind.Existence.
 
-In that version Existence will be improved.
+Next version will be 0.3.3
 
-For help see Documentation, Tutorial, use Mind.Tets file (and try to understand its code) and see pro_1.py and pro_2.py files (on GitHub).
+In that version I'm completely rewriting Knowledge.
 
-Note: documentation might be late on PyPI so check one on GitHub.
+For help see Documentation, Tutorial, see pro files (and try to understand its code).
+
+Notes: Documentation on PYPI might be late, Mind is Python 2 incompatible!

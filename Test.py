@@ -1,7 +1,5 @@
 """
-Mind.test
-by Jakov Manjkas
-aka. Knowledge
+UNSTABLE & OLD
 """
 
 if __name__ == '__main__':

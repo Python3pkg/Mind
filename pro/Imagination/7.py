@@ -20,9 +20,9 @@ keyboard.extend([(pygame.K_ESCAPE, "quit")])
 
 Main_menu.set_game(Game)
 
-Main_menu.set_from(True, text="Start", color=(255, 0, 0), menu=Main_menu)
-Main_menu.set_from(text="Options", color=(0, 255, 0), menu=Main_menu, do=Imagination.link(Places[1]))
-Main_menu.set_from(text="Quit", color=(0, 0, 255), menu=Main_menu, do=Imagination.Quit)
+Main_menu.set_from(True, text="Start", color=(255, 0, 0))
+Main_menu.set_from(text="Options", color=(0, 255, 0), do=Imagination.link(Places[1]))
+Main_menu.set_from(text="Quit", color=(0, 0, 255), do=Imagination.Quit)
 Main_menu.set_options()
 
 Options = Imagination.Vertical_menu(Places[1], 150, keyboard=keyboard)

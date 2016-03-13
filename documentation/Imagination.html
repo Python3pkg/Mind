@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Mind.Imagination &mdash; Mind 0.3 documentation</title>
+    <title>Mind.Imagination &mdash; Mind 0.3.2 documentation</title>
     
     <link rel="stylesheet" href="_static/traditional.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3',
+        VERSION:     '0.3.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="Mind 0.3 documentation" href="index.html" />
+    <link rel="top" title="Mind 0.3.2 documentation" href="index.html" />
     <link rel="next" title="Mind.Existence" href="Existence.html" />
     <link rel="prev" title="Mind.Orientation" href="Orientation.html" /> 
   </head>
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="Orientation.html" title="Mind.Orientation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -66,6 +66,12 @@
 <dt id="Mind.Imagination.HIT">
 <code class="descclassname">Mind.Imagination.</code><code class="descname">HIT</code><em class="property"> = [(13, 'hit'), (32, 'hit')]</em><a class="headerlink" href="#Mind.Imagination.HIT" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of keys for Menu selecting option.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="Mind.Imagination.RETURN">
+<code class="descclassname">Mind.Imagination.</code><code class="descname">RETURN</code><em class="property"> = [(13, 'return')]</em><a class="headerlink" href="#Mind.Imagination.RETURN" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of keys for input option return.</p>
 </dd></dl>
 
 <dl class="function">
@@ -335,7 +341,7 @@
 
 <dl class="method">
 <dt id="Mind.Imagination.Game.declare">
-<code class="descname">declare</code><span class="sig-paren">(</span><em>type=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Game.declare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Game.declare" title="Permalink to this definition">¶</a></dt>
+<code class="descname">declare</code><span class="sig-paren">(</span><em>type_=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Game.declare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Game.declare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines menues parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -460,7 +466,7 @@ previously defined are prefered.</li>
 
 <dl class="class">
 <dt id="Mind.Imagination.Keyboard">
-<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">Keyboard</code><span class="sig-paren">(</span><em>definer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Keyboard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Keyboard" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">Keyboard</code><span class="sig-paren">(</span><em>definer</em>, <em>flags=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Keyboard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Keyboard" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bacis keyboard class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -494,7 +500,7 @@ previously defined are prefered.</li>
 
 <dl class="class">
 <dt id="Mind.Imagination.Main_menu">
-<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">Main_menu</code><span class="sig-paren">(</span><em>places</em>, <em>x_distance</em>, <em>y_distance</em>, <em>*options</em>, <em>off=(0</em>, <em>0)</em>, <em>off_type='pixel'</em>, <em>start=(50</em>, <em>50)</em>, <em>keyboard=&lt;Mind.Imagination.Keyboard object at 0x01C20770&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">Main_menu</code><span class="sig-paren">(</span><em>places, x_distance, y_distance, *options, off=(0, 0), off_type='pixel', start=(50, 50), keyboard=&lt;Mind.Imagination.Keyboard object at 0x01827B90&gt;, dec=['up', 'down', 'hit']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Basic menu class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -541,7 +547,7 @@ option</li>
 
 <dl class="method">
 <dt id="Mind.Imagination.Main_menu.define">
-<code class="descname">define</code><span class="sig-paren">(</span><em>type=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.define"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.define" title="Permalink to this definition">¶</a></dt>
+<code class="descname">define</code><span class="sig-paren">(</span><em>type_=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.define"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.define" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines options parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -559,7 +565,7 @@ option</li>
 
 <dl class="method">
 <dt id="Mind.Imagination.Main_menu.get_from">
-<code class="descname">get_from</code><span class="sig-paren">(</span><em>prior=False</em>, <em>**rest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.get_from"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.get_from" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_from</code><span class="sig-paren">(</span><em>prior=True</em>, <em>**rest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.get_from"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.get_from" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Returns option from menu combining previously defined and rest</dt>
 <dd>arguments.</dd>
@@ -585,7 +591,7 @@ previously defined are prefered.</li>
 
 <dl class="method">
 <dt id="Mind.Imagination.Main_menu.set_from">
-<code class="descname">set_from</code><span class="sig-paren">(</span><em>seted_option=False</em>, <em>prior=False</em>, <em>**rest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.set_from"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.set_from" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_from</code><span class="sig-paren">(</span><em>seted_option=False</em>, <em>prior=True</em>, <em>**rest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.set_from"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.set_from" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets option to menu.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -642,24 +648,22 @@ previously defined are prefered</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="Mind.Imagination.Main_menu.reset">
-<code class="descname">reset</code><span class="sig-paren">(</span><em>*rest</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turns on all options in Main Menu.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rest</strong> &#8211; unimportant parameter.</td>
-</tr>
-</tbody>
-</table>
+<dt id="Mind.Imagination.Main_menu.lock">
+<code class="descname">lock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Locks menu index.*</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Imagination.Main_menu.unlock">
+<code class="descname">unlock</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Main_menu.unlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Main_menu.unlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlocks menu index.*</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="Mind.Imagination.Vertical_menu">
-<code class="descclassname">Mind.Imagination.</code><code class="descname">Vertical_menu</code><span class="sig-paren">(</span><em>places</em>, <em>distance</em>, <em>*options</em>, <em>off=(0</em>, <em>0)</em>, <em>off_type='pixel'</em>, <em>keyboard=&lt;Mind.Imagination.Keyboard object at 0x01C20F30&gt;</em>, <em>start=(50</em>, <em>50)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Vertical_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Vertical_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Mind.Imagination.</code><code class="descname">Vertical_menu</code><span class="sig-paren">(</span><em>places, distance, *options, off=(0, 0), off_type='pixel', keyboard=&lt;Mind.Imagination.Keyboard object at 0x0282E910&gt;, start=(50, 50), dec=['up', 'down', 'hit']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Vertical_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Vertical_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns menu which is vertical.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -682,7 +686,7 @@ previously defined are prefered</li>
 
 <dl class="function">
 <dt id="Mind.Imagination.Horizontal_menu">
-<code class="descclassname">Mind.Imagination.</code><code class="descname">Horizontal_menu</code><span class="sig-paren">(</span><em>places</em>, <em>distance</em>, <em>*options</em>, <em>off=(0</em>, <em>0)</em>, <em>off_type='pixel'</em>, <em>keyboard=&lt;Mind.Imagination.Keyboard object at 0x01C20F90&gt;</em>, <em>start=(50</em>, <em>50)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Horizontal_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Horizontal_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Mind.Imagination.</code><code class="descname">Horizontal_menu</code><span class="sig-paren">(</span><em>places, distance, *options, off=(0, 0), off_type='pixel', keyboard=&lt;Mind.Imagination.Keyboard object at 0x0282EA90&gt;, start=(50, 50), dec=['left', 'right', 'hit']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#Horizontal_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.Horizontal_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns menu which is horizontal.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -743,7 +747,7 @@ previously defined are prefered</li>
 
 <dl class="class">
 <dt id="Mind.Imagination.option">
-<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">option</code><span class="sig-paren">(</span><em>image</em>, <em>menu</em>, <em>do=&lt;function useless at 0x01C2CA98&gt;</em>, <em>pos_do=&lt;function useless at 0x01C2CA98&gt;</em>, <em>anti_pos_do=&lt;function useless at 0x01C2CA98&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.option" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">option</code><span class="sig-paren">(</span><em>image</em>, <em>menu</em>, <em>do=&lt;function useless&gt;</em>, <em>pos_do=&lt;function useless&gt;</em>, <em>anti_pos_do=&lt;function useless&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.option" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bacis menu option class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -764,6 +768,12 @@ previously defined are prefered</li>
 <dt id="Mind.Imagination.option.set_position">
 <code class="descname">set_position</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#option.set_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.option.set_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets option&#8217;s position.*</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Imagination.option.reset_position">
+<code class="descname">reset_position</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#option.reset_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.option.reset_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes option&#8217;s position*</p>
 </dd></dl>
 
 <dl class="method">
@@ -794,7 +804,7 @@ previously defined are prefered</li>
 
 <dl class="class">
 <dt id="Mind.Imagination.pusher">
-<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">pusher</code><span class="sig-paren">(</span><em>x1</em>, <em>y1</em>, <em>image</em>, <em>obj</em>, <em>do=None</em>, <em>pos_do=None</em>, <em>anti_pos_do=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#pusher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.pusher" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">pusher</code><span class="sig-paren">(</span><em>x1</em>, <em>y1</em>, <em>image</em>, <em>obj</em>, <em>do</em>, <em>pos_do</em>, <em>anti_pos_do</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#pusher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.pusher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bacis independed option class (mostly used in option class).*</p>
 <dl class="method">
 <dt id="Mind.Imagination.pusher.blit">
@@ -830,7 +840,7 @@ previously defined are prefered</li>
 
 <dl class="class">
 <dt id="Mind.Imagination.text_option">
-<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">text_option</code><span class="sig-paren">(</span><em>font</em>, <em>text</em>, <em>color</em>, <em>menu</em>, <em>do=&lt;function useless at 0x01C2CA98&gt;</em>, <em>pos_do=&lt;function useless at 0x01C2CA98&gt;</em>, <em>anti_pos_do=&lt;function useless at 0x01C2CA98&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#text_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.text_option" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">text_option</code><span class="sig-paren">(</span><em>font</em>, <em>text</em>, <em>color</em>, <em>menu</em>, <em>do=&lt;function useless&gt;</em>, <em>pos_do=&lt;function useless&gt;</em>, <em>anti_pos_do=&lt;function useless&gt;</em>, <em>cl_txt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#text_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.text_option" title="Permalink to this definition">¶</a></dt>
 <dd><p>Textual menu option class(subclass of option).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -861,11 +871,31 @@ previously defined are prefered</li>
 <dd><p>Blits option.*</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="Mind.Imagination.text_option.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#text_option.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.text_option.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes to option&#8217;s text.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; text which will be written to option</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Imagination.text_option.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#text_option.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.text_option.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleats option&#8217;s text.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="Mind.Imagination.text_pusher">
-<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">text_pusher</code><span class="sig-paren">(</span><em>x1</em>, <em>y1</em>, <em>font</em>, <em>text</em>, <em>color</em>, <em>obj</em>, <em>do</em>, <em>pos_do</em>, <em>anti_pos_do</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#text_pusher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.text_pusher" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">text_pusher</code><span class="sig-paren">(</span><em>x1</em>, <em>y1</em>, <em>font</em>, <em>text</em>, <em>cl_text</em>, <em>color</em>, <em>obj</em>, <em>do</em>, <em>pos_do</em>, <em>anti_pos_do</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#text_pusher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.text_pusher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Textual independed option class (mostly used in text_option class,
 subclass of pusher).*</p>
 <dl class="method">
@@ -874,6 +904,78 @@ subclass of pusher).*</p>
 <dd><p>Updates pusher.*</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="Mind.Imagination.text_pusher.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#text_pusher.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.text_pusher.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes to pusher&#8217;s text.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211; text which will be written to option</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Imagination.text_pusher.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#text_pusher.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.text_pusher.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleats pusher&#8217;s text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Imagination.input_option">
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">input_option</code><span class="sig-paren">(</span><em>font</em>, <em>text</em>, <em>color</em>, <em>menu</em>, <em>do=&lt;function useless&gt;</em>, <em>pos_do=&lt;function useless&gt;</em>, <em>anti_pos_do=&lt;function useless&gt;</em>, <em>cl_txt=None</em>, <em>pub='return'</em>, <em>ret='return'</em>, <em>snd=&lt;function useless&gt;</em>, <em>act_on='hit'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#input_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.input_option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input menu option class(subclass of text_option).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>font</strong> (<em>pygame.font.Font</em>) &#8211; option font</li>
+<li><strong>color</strong> (<em>color-like tuple</em>) &#8211; option color</li>
+<li><strong>text</strong> (<em>str</em>) &#8211; option text</li>
+<li><strong>menu</strong> (<a class="reference internal" href="#Mind.Imagination.Main_menu" title="Mind.Imagination.Main_menu"><code class="xref py py-class docutils literal"><span class="pre">Main_menu</span></code></a>) &#8211; option menu</li>
+<li><strong>do</strong> (<em>function</em>) &#8211; what happens when option is activated</li>
+<li><strong>pos_do</strong> (<em>function</em>) &#8211; what happens when index comes to option</li>
+<li><strong>anti_pos_do</strong> (<em>function</em>) &#8211; what happens when index to another option</li>
+<li><strong>pub</strong> (<em>str</em>) &#8211; when will text be entered</li>
+<li><strong>ret</strong> (<em>str</em>) &#8211; when will you return to main menu</li>
+<li><strong>snd</strong> (<em>function</em>) &#8211; what happens with text you wrote</li>
+<li><strong>act_on</strong> (<em>str</em>) &#8211; when will you enter input option</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Mind.Imagination.input_option.set_position">
+<code class="descname">set_position</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#input_option.set_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.input_option.set_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets option&#8217;s position.*</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Mind.Imagination.input_option.blit">
+<code class="descname">blit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#input_option.blit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.input_option.blit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blits option.*</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Imagination.input_pusher">
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">input_pusher</code><span class="sig-paren">(</span><em>x1</em>, <em>y1</em>, <em>font</em>, <em>text</em>, <em>cl_text</em>, <em>color</em>, <em>obj</em>, <em>do</em>, <em>pos_do</em>, <em>anti_pos_do</em>, <em>snd</em>, <em>pub</em>, <em>ret</em>, <em>act_on</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#input_pusher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.input_pusher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Input independed option class (mostly used in input_option class,
+subclass of pusher).*</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Mind.Imagination.fake_txt_opt">
+<em class="property">class </em><code class="descclassname">Mind.Imagination.</code><code class="descname">fake_txt_opt</code><span class="sig-paren">(</span><em>font</em>, <em>text</em>, <em>color</em>, <em>menu</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Mind/Imagination.html#fake_txt_opt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Mind.Imagination.fake_txt_opt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fake menu option, use for titles!</p>
 </dd></dl>
 
 </div>
@@ -929,11 +1031,11 @@ subclass of pusher).*</p>
         <li class="right" >
           <a href="Orientation.html" title="Mind.Orientation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Mind 0.3.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015, Jakov Manjkas.
+        &copy; Copyright 2014-2016, Jakov Manjkas.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
