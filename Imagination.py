@@ -416,8 +416,8 @@ class Keyboard:
                         elif event.type == pygame.KEYUP:
                             self.keys[self.definer[event.key]] = 3
                 if event.type == pygame.KEYDOWN and self.Input:
-                    if self.Input(event.unicode):
-                        self.let = event.unicode
+                    if self.Input(event.str):
+                        self.let = event.str
 
 
 class Main_menu:
@@ -917,7 +917,7 @@ class input_option(text_option):
             self.pusher.Ret()
         if self.keyboard.let:
             self.pusher.write(self.keyboard.let)
-            print(self.pusher.text)
+            print((self.pusher.text))
 
 class input_pusher(text_pusher):
     """Input independed option class (mostly used in input_option class,

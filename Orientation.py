@@ -897,7 +897,7 @@ class visual_map:
                 self.tiles = self.t_width, self.t_height = self.width //\
                   self.tile_width, self.height // self.tile_height
             self.next_id = 1
-            for im, nm in images.items():
+            for im, nm in list(images.items()):
                 self.create_tileset(im, nm)
 
         self.objects = []

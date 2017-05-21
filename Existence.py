@@ -1,5 +1,6 @@
 import pygame
 from Mind import Orientation
+import collections
 
 
 class Object:
@@ -327,7 +328,7 @@ class logic_obj(Logic):
         for att in dir(self.obj):
             if att[:2] != "__" and att not in ("blit", "set_position",
               "move", "init", "bind"):
-                if callable(getattr(self.obj, att)):
+                if isinstance(getattr(self.obj, att), collections.Callable):
                     setattr(type(obj), att, getattr(type(self.obj), att))
                 else:
                     setattr(type(obj), att, getattr(self.obj, att))
@@ -421,7 +422,7 @@ class collider:
     def move(self):
         for obj in self.cl_objects:
             cld = self.obj.collide(obj.obj)
-            Mn = min(filter(lambda x: x, cld)) if any(cld) else None
+            Mn = min([x for x in cld if x]) if any(cld) else None
             if Mn:
                 if self.funcs[-1]:
                     self.funcs[-1](self, obj)

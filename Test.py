@@ -3,8 +3,8 @@ UNSTABLE & OLD
 """
 
 if __name__ == '__main__':
-    import Knowledge
-    import Orientation
+    from . import Knowledge
+    from . import Orientation
 else:
     from . import Knowledge
     from . import Orientation
@@ -20,7 +20,7 @@ def test_know():
     save[5] = 12.44
     save[3.1] = [1, "aaa", [1, 2], 5]
     print(save)
-    print(save["player"])
+    print((save["player"]))
     save.add_data('Player', 'live')
     save.add_data('Position', 1)
     save.add_data(5, 12.44)
@@ -57,14 +57,14 @@ def test_map():
     Galaxy = Orientation.group_of_points(Map, 'Some galaxy', Orientation.point(224, 111, Map, 'Vulcan'), Orientation.point(456, 31, Map))
     Sector = Orientation.rect(200, 200, 100, 100, Map, 'Sector_x')
     print(Map)
-    print(str(Earth), 'in', str(Sector), '=', Earth in Sector)
-    print(str(Point), 'in', str(Sector), '=', Point in Sector)
+    print((str(Earth), 'in', str(Sector), '=', Earth in Sector))
+    print((str(Point), 'in', str(Sector), '=', Point in Sector))
     for p in Map.at(111, 234):
-        print(str(p))
+        print((str(p)))
     Subsector = Orientation.rect(220, 240, 20, 20, Map)
     Something = Orientation.rect(280, 280, 50, 50, Map)
-    print(str(Subsector), 'in', str(Sector), '=', Subsector in Sector)
-    print(str(Something), 'in', str(Sector), '=', Something in Sector)
+    print((str(Subsector), 'in', str(Sector), '=', Subsector in Sector))
+    print((str(Something), 'in', str(Sector), '=', Something in Sector))
 
 
 def test_tiled_map(file_name):
